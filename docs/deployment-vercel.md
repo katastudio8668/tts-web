@@ -3,7 +3,7 @@
 1. Import `thanhtai-personal/korva-tts-web` into Vercel.
 2. Select Vite as the framework preset and keep the repository root as the project root.
 3. Build command: `npm run build`; output directory: `dist`.
-4. Configure the three public environment variables described in `.env.example`.
+4. Configure the three public environment variables described in `.env.example`. Set `VITE_API_BASE_URL` to the API hostname plus `/api/v1`.
 5. Add the production Vercel domain to Supabase redirect URLs and the API CORS allowlist.
 6. Deploy a preview first and verify Google OAuth, dashboard API calls, generation polling, audio playback, and history.
 7. Promote to production only after the API hostname and Supabase callback URLs are confirmed.
