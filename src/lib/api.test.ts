@@ -41,7 +41,8 @@ describe('apiRequest', () => {
       headers: { 'Content-Type': 'application/json' },
     })));
 
-    await expect(apiRequest('/generations', 'token')).rejects.toBeInstanceOf(ApiError);
-    await expect(apiRequest('/generations', 'token')).rejects.toMatchObject({ status: 402 });
+    const request = apiRequest('/generations', 'token');
+    await expect(request).rejects.toBeInstanceOf(ApiError);
+    await expect(request).rejects.toMatchObject({ status: 402, message: 'Tài khoản không đủ credit để tạo giọng nói.' });
   });
 });
