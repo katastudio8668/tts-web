@@ -14,7 +14,7 @@ Responsive React + TypeScript customer app for the KorvaTTS service.
 
 1. Copy `.env.example` to `.env.local`.
 2. Set the public Supabase project URL and anon/publishable key.
-3. Set `VITE_API_BASE_URL` to the API origin.
+3. Set `VITE_API_BASE_URL` to the API base URL including `/api/v1`.
 4. Run `npm install`, then `npm run dev`.
 
 Never put a Supabase service-role key, VPS credential, private API key, or engine token in Vite variables. Every `VITE_*` variable is public in the browser bundle.
