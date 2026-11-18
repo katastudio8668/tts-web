@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Download, Play } from 'lucide-react';
-import { fetchAudio, type Generation } from '../lib/api';
+import { fetchAudio, generationStatusLabel, type Generation } from '../lib/api';
 
 export default function GenerationHistoryItem({ item, token }: { item: Generation; token: string }) {
   const [audioUrl, setAudioUrl] = useState('');
@@ -37,7 +37,7 @@ export default function GenerationHistoryItem({ item, token }: { item: Generatio
         {error && <span className="inline-error" role="alert">{error}</span>}
       </div>
       <div className="history-actions">
-        <span className={`job-status ${item.status.toLowerCase()}`}>{item.status}</span>
+        <span className={`job-status ${item.status.toLowerCase()}`}>{generationStatusLabel(item.status)}</span>
         {item.status === 'SUCCEEDED' && !audioUrl && (
           <button className="icon-button" type="button" aria-label="Nghe audio" disabled={loading} onClick={() => void loadAudio()}>
             <Play size={16} />
