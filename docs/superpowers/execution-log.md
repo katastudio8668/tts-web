@@ -8,9 +8,10 @@
 
 - Vite + React + TypeScript application, strict TypeScript setup, route structure, dark responsive app shell, and mobile bottom navigation.
 - Supabase Google OAuth session handling, protected routes, callback/session redirect, and sign-out.
-- Session-aware typed API client with bearer token, timeout, JSON error normalization, and authenticated WAV fetch.
+- Session-aware typed API client with bearer token, timeout, JSON error normalization, and authenticated WAV fetch. Fixed a duplicated `/api/v1` URL prefix affecting all requests when the documented Vercel base URL is used.
 - Dashboard, credit/usage cards, recent jobs, text editor, voice selector, speed control, generation polling, audio playback/download, history, plans, and account screens.
-- Empty/loading/error states; plans remain informational until prices and payment flow are approved.
+- Empty/loading/error states; OAuth callback errors are surfaced; insufficient-credit errors link to plans; plans remain informational until prices and payment flow are approved.
+- Added standalone TypeScript check to CI and API client unit tests for URL construction, bearer token, validation arrays, and insufficient-credit messaging.
 - Vercel project created and a preview deployment built successfully from this feature branch.
 
 ## Preview build
