@@ -1,39 +1,47 @@
 # Execution log — Korva TTS Web
 
-**Branch:** \`feat/korva-tts-web-mvp\`  
-**Date:** 2026-11-18  
-**Status:** MVP frontend implemented; preview build deployed.
+**Branch:** `feat/korva-tts-web-mvp`  
+**Updated:** 2026-11-19  
+**Status:** Frontend MVP code updated; latest changes are not yet deployed or verified by CI.
 
-## Implemented in this branch
+## Implemented
 
-- Vite + React + TypeScript application, strict TypeScript setup, route structure, dark responsive app shell, and mobile bottom navigation.
-- Supabase Google OAuth session handling, protected routes, callback/session redirect, and sign-out.
-- Session-aware typed API client with bearer token, timeout, JSON error normalization, and authenticated WAV fetch. Fixed a duplicated `/api/v1` URL prefix affecting all requests when the documented Vercel base URL is used.
-- Dashboard, credit/usage cards, recent jobs, text editor, voice selector, speed control, generation polling, audio playback/download, history, plans, and account screens.
-- Empty/loading/error states; OAuth callback errors are surfaced; insufficient-credit errors link to plans; plans remain informational until prices and payment flow are approved.
-- Added standalone TypeScript check to CI and API client unit tests for URL construction, bearer token, validation arrays, and insufficient-credit messaging.
-- Vercel project created and a preview deployment built successfully from this feature branch.
+- Vite + React + TypeScript application, responsive app shell, protected routes, and mobile bottom navigation.
+- Supabase Google OAuth session handling, sign-in, callback error display, and sign-out.
+- Dashboard with account identity, available credits, monthly usage, current plan, and recent jobs.
+- TTS workspace with text editor, voice catalogue, speed setting, generation submission, status polling, audio playback, and WAV download.
+- Generation history with authenticated audio playback and download.
+- Plans/usage and account screens. No prices or payment checkout have been invented.
+- Typed API client with bearer token, timeout, JSON error normalization, authenticated audio fetch, and localized generation status/error messages.
+- Fixed the duplicated `/api/v1` URL prefix: `VITE_API_BASE_URL` is configured as the full versioned base URL, and request paths are appended once.
+- Added API client unit tests for URL construction, bearer-token injection, NestJS validation-array errors, and insufficient-credit messaging.
+- Added an explicit `npm run typecheck` script and included it in GitHub Actions CI.
 
-## Preview build
+## Vercel preview
 
-- Vercel project: \`korva-tts-web\`
+- Project: `korva-tts-web`
 - Preview URL: https://korva-tts-web-git-feat-korva-a69a5a-thanhtaipersonals-projects.vercel.app
-- Build result: READY; Vite production build completed successfully for commit `4e5c915a742cc4178af41f9048d887eb8e7485da`. Later small frontend updates and this execution log were committed after that build and have not yet been deployed.
-- This is a preview build only. The project is not connected for automatic Git deployments yet.
+- A Vercel build previously reached READY for commit `4e5c915a742cc4178af41f9048d887eb8e7485da`.
+- That preview predates the latest frontend fixes and is not evidence that the current branch head has been built.
+- The preview is protected by the Vercel team's deployment protection.
+- A new deployment for the latest branch head was rejected with HTTP 402 `resource_creation_blocked` because the Vercel team exceeded fair-use limits. The team owner must resolve the Vercel billing/plan/security requirement before a new deployment can be created.
 
-## Verification evidence and limitations
+## Verification
 
-- Vercel production build passed for the deployed commit.
-- GitHub Actions runs were created but failed before any runner step was assigned (runner ID 0 and no steps reported). No GitHub CI test result is claimed.
-- The preview has no Supabase or API environment variables yet; Google sign-in and API operations are therefore not live in the preview.
-- The preview is protected by the Vercel team's deployment protection settings.
-- A subsequent preview deployment request for the latest branch head was blocked by Vercel with HTTP 402 `resource_creation_blocked` (team fair-use limit). No CLI fallback with the local source checkout is available in this session; the team owner must resolve the Vercel limit before another deployment.
+- GitHub Actions was triggered for the feature branch, but jobs ended before any runner step started. The GitHub Jobs API reported `runner_id=0` and an empty `steps` array.
+- Therefore the latest TypeScript build, ESLint, and Vitest results are **not verified**. Tests have been added but must not be described as passing.
+- The execution environment could not clone GitHub because outbound DNS/network access was unavailable; local npm verification was not possible.
+- The preview has no Supabase or API environment variables, so Google sign-in and live API calls are not active there.
 
-## Remaining work before production
+## Remaining before production
 
-- Add \`VITE_SUPABASE_URL\`, \`VITE_SUPABASE_ANON_KEY\` (public anon/publishable key), and \`VITE_API_BASE_URL\` in Vercel after the API hostname is configured.
-- Configure Google provider and exact OAuth redirect URLs in Supabase.
-- Add the exact Vercel production origin to API CORS.
-- Verify the full flow against the deployed Contabo API: sign-in → profile → voice catalogue → generation → polling → WAV playback/download → history/usage.
-- Run frontend lint, unit tests, and Playwright flow once GitHub Actions runners are available.
-- Connect the repository to Vercel after the implementation branch is reviewed and merged to main.
+1. Restore Vercel team deployment eligibility and deploy the latest feature branch to Preview.
+2. Resolve GitHub Actions runner availability, then run lint, typecheck, and unit tests.
+3. Configure Vercel public variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY` (public anon/publishable key only)
+   - `VITE_API_BASE_URL` (API hostname plus `/api/v1`)
+4. Configure Supabase Google provider and exact redirect URLs.
+5. Configure API CORS for the exact Vercel origin.
+6. Verify sign-in → dashboard → voice list → generation → polling → WAV playback/download → history against the deployed Contabo API.
+7. Review and merge the feature branch into `main` only after the checks pass.
