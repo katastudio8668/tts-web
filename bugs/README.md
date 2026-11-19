@@ -1,6 +1,6 @@
 # Bug Register — KATA TTS Web
 
-> Cập nhật: 2026-11-19 18:48:40 (UTC+07:00)
+> Cập nhật: 2026-11-19 18:49:38 (UTC+07:00)
 > Mỗi bug được quản lý trong một file riêng. Danh sách dưới đây là chỉ mục theo nhóm và mức ưu tiên.
 
 ## Tổng quan
@@ -29,7 +29,7 @@
 
 | Bug | Thời điểm sửa | Trạng thái |
 |---|---|---|
-| [AP-WEB-006 — Retry generation tái sử dụng idempotency key](../fixed-bugs/ap-web-006.md) | 2026-11-19 18:48:40 +07:00 | FIXED — chờ CI/browser |
+| [AP-WEB-006 — Retry generation tái sử dụng idempotency key](../fixed-bugs/ap-web-006.md) | 2026-11-19 18:49:38 +07:00 | FIXED — chờ CI/browser |
 
 ## Coding Rule — MEDIUM
 
