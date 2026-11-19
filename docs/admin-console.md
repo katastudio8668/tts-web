@@ -11,13 +11,14 @@ Use a distinct Admin layout with its own navigation and overview. Do not create 
 
 ## 2. Reuse from Clothe Rental
 
-The clothe-rental-management project documents a mature dashboard approach:
-- Dashboard route group and shared navigation.
-- Report pages with date filters and aggregate views.
-- Role-based route experience backed by server-side RBAC.
-- Component -> Hook -> Query -> Service -> API client flow.
+The clothe-rental-management source was inspected at DashboardShell, DashboardNav, RevenueReportPage, SettingsUsersPage and useDashboardShell. Reuse these as design/interaction references:
+- DashboardShell for responsive/collapsible navigation and a consistent dashboard frame.
+- DashboardNav for grouped navigation, active-route indication, icons and focus styling.
+- RevenueReportPage for the reporting-page pattern and date-filtered chart composition.
+- SettingsUsersPage for access-denied, loading/error states, searchable/paginated user lists and create/edit drawers.
+- useDashboardShell for the principle of role-aware navigation, always paired with backend authorization.
 
-Reuse the patterns and suitable presentational components only after checking their current source and dependencies. Adapt to KATA's Vite/React Router/TanStack Query stack; do not copy Next.js App Router files, Supabase branch-scope policies or Clothe Rental domain code.
+These are not drop-in components: Clothe Rental uses Next.js App Router + MobX and branch-scoped roles, while KATA uses Vite/React Router + TanStack Query and a single ADMIN role. Rebuild/adapt only the relevant presentation patterns using KATA's existing dependencies. Do not copy Next.js route files, Clothe Rental database tables, branch-scoped permissions, Supabase data-access code or domain logic.
 
 ## 3. Route map
 
