@@ -1,16 +1,25 @@
 # Mandatory Anti-Pattern Review — KATA TTS Web
 
-This review is required for every behavior, auth/session, generation, billing, routing, API-client, caching or state change. For documentation-only changes, mark behavior categories N/A with a reason.
+This review is required for every behavior, auth/session, generation, billing, routing, API-client, caching, state or architecture change. For documentation-only changes, mark behavior categories N/A with a reason.
 
 ## Review procedure
 
 1. Inspect the complete diff: `git diff --check`, `git diff --stat`, then every changed hunk.
-2. Trace changed flows through page/component → hooks/state → TanStack Query → API client → backend contract. Inspect consumers, cache keys and cleanup paths.
-3. Read related open reports in [bugs/README.md](../../bugs/README.md). Check for regression against known AP items.
+2. Trace changed flows through page/component → feature hook/use-case → TanStack Query → feature API adapter → shared transport → backend contract. Inspect consumers, cache keys and cleanup paths.
+3. Read related open reports in [bugs/README.md](../../bugs/README.md). Check for regression against known AP/CR items.
 4. Walk every applicable checklist item and mark **PASS**, **FINDING**, or **N/A + reason**.
 5. Add regression tests for confirmed behavior defects; update bug register and record intentional deferrals.
 
 ## Mandatory checklist
+
+### Architecture boundaries — Modular + Layered + Atomic
+- [ ] Business capabilities have clear feature ownership; no feature imports another feature's private implementation.
+- [ ] Route pages compose feature screens and do not own large business workflows.
+- [ ] Presentation → application → domain → infrastructure dependency direction is respected.
+- [ ] Domain rules/types do not depend on React, router, TanStack Query, Supabase or browser transport.
+- [ ] Shared modules contain genuinely cross-feature code, not feature-specific components moved for convenience.
+- [ ] Atomic composition is used pragmatically; no trivial-component explosion or taxonomy-only folders.
+- [ ] No circular dependencies or catch-all modules mixing transport, business rules and presentation formatting.
 
 ### Correctness and UX
 - [ ] Loading, pending, empty, error, success and disabled states are coherent.
@@ -71,7 +80,7 @@ This review is required for every behavior, auth/session, generation, billing, r
 |---|---|---|
 | Critical | Cross-account data exposure, secret leakage, auth bypass, destructive action | Block merge/release |
 | High | Duplicate generation/charge intent, wrong user's cache, broken auth/session, persistent incorrect state | Block merge |
-| Medium | Significant UX state gap, test gap, maintainability issue with bounded impact | Fix or document accepted deferral |
+| Medium | Significant UX state gap, architecture boundary violation, test gap, maintainability issue with bounded impact | Fix or document accepted deferral |
 | Low | Cosmetic/style issue without behavior impact | May defer |
 
 For each finding include: **ID, severity, file:line, evidence, trigger, impact, root cause, recommended fix, regression test**.
