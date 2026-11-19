@@ -1,15 +1,17 @@
 # Bug Register — KATA TTS Web
 
-> Cập nhật: 2026-11-19  
+> Cập nhật: 2026-11-19 18:49:38 (UTC+07:00)
 > Mỗi bug được quản lý trong một file riêng. Danh sách dưới đây là chỉ mục theo nhóm và mức ưu tiên.
 
 ## Tổng quan
 
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
-| Anti-pattern | 8 | HIGH |
+| Anti-pattern đang mở | 7 | HIGH |
+| Đã sửa (xem fixed-bugs) | 1 | HIGH |
 | Coding Rule | 5 | MEDIUM |
-| **Tổng** | **13** | |
+| **Tổng số bug đã ghi nhận** | **13** | |
+| **Còn mở** | **12** | |
 
 ## Anti-pattern — HIGH
 
@@ -20,9 +22,14 @@
 | [AP-WEB-003 — API URL fallback localhost trong production](ap-web-003.md) | HIGH | OPEN |
 | [AP-WEB-004 — PlansPage ôm nhiều trách nhiệm](ap-web-004.md) | HIGH | OPEN |
 | [AP-WEB-005 — fetchAudio chưa dùng chung error/transport policy](ap-web-005.md) | HIGH | OPEN |
-| [AP-WEB-006 — Retry generation dùng idempotency key mới](ap-web-006.md) | HIGH | OPEN |
 | [AP-WEB-007 — Polling generation không giới hạn](ap-web-007.md) | HIGH | OPEN |
 | [AP-WEB-008 — Query cache không tách/xóa khi đổi tài khoản](ap-web-008.md) | HIGH | OPEN |
+
+## Đã sửa — HIGH
+
+| Bug | Thời điểm sửa | Trạng thái |
+|---|---|---|
+| [AP-WEB-006 — Retry generation tái sử dụng idempotency key](../fixed-bugs/ap-web-006.md) | 2026-11-19 18:49:38 +07:00 | FIXED — chờ CI/browser |
 
 ## Coding Rule — MEDIUM
 
@@ -37,6 +44,7 @@
 ## Quy ước
 
 - `OPEN`: đã ghi nhận, chưa sửa.
+- Bug đã sửa được chuyển khỏi thư mục này sang `../fixed-bugs/`; không xóa hồ sơ bug.
 - `IN_PROGRESS`: đang xử lý.
 - `FIXED`: đã sửa, chưa xác minh đầy đủ.
 - `VERIFIED`: đã có bằng chứng kiểm thử phù hợp.
