@@ -6,6 +6,8 @@ Before changing code, read `AGENTS.md` and `docs/engineering/AI_CODING_RULES.md`
 
 Project: Vite + React 19 + TypeScript, React Router 7, TanStack Query 5 and Supabase Auth. The NestJS API is authoritative for credits, plans, jobs, payment status and audio ownership.
 
+Architecture contract: combine **Modular + Layered + Atomic**. Organize by business feature; keep dependency direction presentation → application → domain → infrastructure; use Atomic Design pragmatically inside presentation. Pages compose feature screens, shared code is genuinely cross-feature, and feature internals are not imported by other features. Do not mass-migrate legacy files or extract trivial components without a scoped reason.
+
 Required workflow: DISCOVER → TRACE → PLAN → IMPLEMENT → REVIEW → VALIDATE → FIX/REVALIDATE. Use test-first for behavioral changes. Review the full diff, all consumers, query keys, session changes, retries and cleanup paths. Critical/High account isolation, authorization, secrets, duplicate generation or incorrect credit presentation findings block merge.
 
 MVP constraint: use existing architecture; do not introduce another global store or state library. TanStack Query owns server state. Avoid speculative abstractions and premature optimization.
