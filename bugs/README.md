@@ -19,7 +19,6 @@
 |---|---|---|
 | [AP-WEB-001 — Retry mua credit dùng idempotency key mới](ap-web-001.md) | HIGH | OPEN |
 | [AP-WEB-002 — Polling trạng thái thanh toán không giới hạn](ap-web-002.md) | HIGH | OPEN |
-
 | [AP-WEB-004 — PlansPage ôm nhiều trách nhiệm](ap-web-004.md) | HIGH | OPEN |
 | [AP-WEB-005 — fetchAudio chưa dùng chung error/transport policy](ap-web-005.md) | HIGH | OPEN |
 | [AP-WEB-007 — Polling generation không giới hạn](ap-web-007.md) | HIGH | OPEN |
