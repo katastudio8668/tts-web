@@ -2,7 +2,10 @@
 
 > Cập nhật: 2026-11-19
 
-Chưa có bug frontend nào được xác nhận đã sửa.
+| Bug | Mức độ | Thời điểm sửa | Trạng thái xác minh |
+|---|---|---|---|
+| [AP-WEB-006 — Retry generation tái sử dụng idempotency key](ap-web-006.md) | HIGH | 2026-11-19 18:47:15 +07:00 | FIXED — chờ CI/browser |
+
 
 ## Quy trình
 
