@@ -45,3 +45,11 @@
 5. Configure API CORS for the exact Vercel origin.
 6. Verify sign-in → dashboard → voice list → generation → polling → WAV playback/download → history against the deployed Contabo API.
 7. Review and merge the feature branch into `main` only after the checks pass.
+
+
+## KATA TTS branding and Contabo endpoint (2026-11-19)
+
+- Public product branding is KATA TTS; the underlying Vietnamese synthesis engine remains KorvaTTS.
+- Frontend `.env.example` now targets `https://kata-tts.91-90-82-113.sslip.io/api/v1`.
+- Backend Compose runtime names and dedicated volumes are renamed to the `kata-tts-*` namespace in the backend feature branch.
+- Repository changes do not deploy Vercel or Contabo. Deployment and end-to-end verification remain pending.
