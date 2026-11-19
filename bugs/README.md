@@ -1,6 +1,6 @@
 # Bug Register — KATA TTS Web
 
-> Cập nhật: 2026-11-19 18:49:38 (UTC+07:00)
+> Cập nhật: 2026-11-20 23:00:00 (UTC+07:00)  
 > Mỗi bug được quản lý trong một file riêng. Danh sách dưới đây là chỉ mục theo nhóm và mức ưu tiên.
 
 ## Tổng quan
@@ -9,9 +9,9 @@
 |---|---:|---|
 | Anti-pattern đang mở | 7 | HIGH |
 | Đã sửa (xem fixed-bugs) | 1 | HIGH |
-| Coding Rule | 5 | MEDIUM |
-| **Tổng số bug đã ghi nhận** | **13** | |
-| **Còn mở** | **12** | |
+| Coding Rule / Architecture | 6 | MEDIUM |
+| **Tổng số bug đã ghi nhận** | **14** | |
+| **Còn mở** | **13** | |
 
 ## Anti-pattern — HIGH
 
@@ -31,7 +31,7 @@
 |---|---|---|
 | [AP-WEB-006 — Retry generation tái sử dụng idempotency key](../fixed-bugs/ap-web-006.md) | 2026-11-19 18:49:38 +07:00 | FIXED — chờ CI/browser |
 
-## Coding Rule — MEDIUM
+## Coding Rule / Architecture — MEDIUM
 
 | Bug | Ưu tiên | Trạng thái |
 |---|---|---|
@@ -40,6 +40,7 @@
 | [CR-WEB-003 — ESLint chưa enforce unused imports/formatting](cr-web-003.md) | MEDIUM | OPEN |
 | [CR-WEB-004 — Không có lockfile cho dependency frontend](cr-web-004.md) | MEDIUM | OPEN |
 | [CR-WEB-005 — Thiếu test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | OPEN |
+| [CR-WEB-006 — Chưa phân định rõ feature module và các layer trong FE](cr-web-006.md) | MEDIUM | OPEN |
 
 ## Quy ước
 
@@ -49,4 +50,5 @@
 - `FIXED`: đã sửa, chưa xác minh đầy đủ.
 - `VERIFIED`: đã có bằng chứng kiểm thử phù hợp.
 - Không chuyển sang `VERIFIED` chỉ dựa trên source review.
-- Ưu tiên HIGH dành cho anti-pattern; MEDIUM dành cho coding-rule theo yêu cầu.
+- Khi xử lý xong, cập nhật cả hai index và ghi commit, thời điểm UTC+07:00, cùng bằng chứng.
+- Ưu tiên HIGH dành cho anti-pattern; MEDIUM dành cho coding-rule/architecture theo yêu cầu.
