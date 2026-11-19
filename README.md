@@ -1,6 +1,6 @@
-# Korva TTS Web
+# KATA TTS Web
 
-Responsive React + TypeScript customer app for the KorvaTTS service.
+Responsive React + TypeScript customer app for the KATA TTS service.
 
 ## Stack
 
@@ -8,7 +8,7 @@ Responsive React + TypeScript customer app for the KorvaTTS service.
 - Supabase Auth (Google OAuth)
 - React Router
 - TanStack Query
-- NestJS API hosted separately on Contabo
+- NestJS API hosted separately on Contabo at kata-tts.91-90-82-113.sslip.io
 
 ## Local setup
 
