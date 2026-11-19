@@ -1,6 +1,6 @@
 # Bug Register — KATA TTS Web
 
-> Cập nhật: 2026-11-19  
+> Cập nhật: 2026-11-19 18:47:15 (UTC+07:00)
 > Mỗi bug được quản lý trong một file riêng. Danh sách dưới đây là chỉ mục theo nhóm và mức ưu tiên.
 
 ## Tổng quan
@@ -34,9 +34,14 @@
 | [CR-WEB-004 — Không có lockfile cho dependency frontend](cr-web-004.md) | MEDIUM | OPEN |
 | [CR-WEB-005 — Thiếu test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | OPEN |
 
+## Đã sửa
+
+Chưa có bug frontend nào được chuyển sang `fixed-bugs/`.
+
 ## Quy ước
 
 - `OPEN`: đã ghi nhận, chưa sửa.
+- Bug đã sửa được chuyển khỏi thư mục này sang `../fixed-bugs/`; không xóa hồ sơ.
 - `IN_PROGRESS`: đang xử lý.
 - `FIXED`: đã sửa, chưa xác minh đầy đủ.
 - `VERIFIED`: đã có bằng chứng kiểm thử phù hợp.
