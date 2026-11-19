@@ -37,8 +37,45 @@ Exceptions: pure documentation, generated code, or configuration-only changes wi
 - TanStack Query owns server state, caching, retries, invalidation and synchronization. Do not mirror server responses into MobX or another store without a concrete reason.
 - Centralize query-key conventions where useful. Include the correct identity/tenant dimensions in user-specific keys; clear or isolate sensitive caches on sign-out/account switch.
 - Avoid unnecessary `useMemo`, `useCallback`, memo wrappers and trivial hooks. Place state correctly before optimizing.
-- Do not build Atomic Design taxonomy or extract tiny components just to meet a pattern. Split large components when responsibilities, business logic, testability or change isolation justify it.
 - Prefer strict TypeScript. Avoid `any`, unsafe casts and non-null assertions when proper narrowing is possible.
+
+### 4.1 Combined architecture: Modular + Layered + Atomic
+
+These are three complementary dimensions, not three competing folder structures:
+
+1. **Modular (feature boundaries):** organize business capabilities by feature/bounded context such as `auth`, `generation`, and `billing`/`payments`. A feature owns its UI, orchestration hooks/use-cases, API adapters and feature-specific types. Other features must not import its private implementation; expose a small public entry point when cross-feature reuse is truly needed.
+2. **Layered (dependency direction):** inside a feature, keep dependencies flowing inward: **presentation → application → domain → infrastructure**. Presentation renders and forwards user intent; application hooks/use-cases coordinate workflows; domain contains framework-independent rules/types; infrastructure handles HTTP, storage and external SDKs. Domain code must not import React, router, TanStack Query, Supabase or browser transport.
+3. **Atomic (UI composition):** use atoms/molecules/organisms only inside the presentation layer to describe UI responsibility and composition. Atoms are small reusable controls; molecules combine controls into a focused interaction; organisms compose meaningful feature sections. Do not split trivial markup into components or create empty taxonomy folders just to satisfy Atomic Design.
+
+**Preferred target shape (adapt names to the existing codebase; do not mass-migrate just to match this tree):**
+
+```text
+src/
+  app/                 # router, providers, app bootstrap
+  shared/
+    api/               # shared HTTP transport and common API primitives
+    ui/                # genuinely cross-feature atoms/molecules/organisms
+    lib/               # generic utilities with no feature ownership
+    types/             # truly shared contracts
+  features/
+    auth/
+      api/ components/ hooks/ model/ types/
+    generation/
+      api/ components/ hooks/ model/ types/
+    billing/
+      api/ components/ hooks/ model/ types/
+  pages/               # route entry points; compose feature screens
+```
+
+Rules for applying the shape:
+
+- Route pages are composition boundaries, not containers for an entire business workflow. Move substantial query/mutation orchestration into feature hooks/use-cases and feature UI into feature components.
+- Shared code must be generic and used by more than one feature. A component used by one feature belongs to that feature, even if it is visually reusable.
+- Keep HTTP mechanics in shared infrastructure; feature API modules define feature-specific endpoints and map responses to feature contracts. Do not mix transport, UI labels, currency/date formatting and feature workflows into one catch-all file.
+- Use feature public exports for intentional cross-feature access. Avoid deep imports into another feature and prevent circular dependencies.
+- Keep server state in TanStack Query; keep ephemeral UI state local to the component that owns the interaction. Do not create a second source of truth.
+- Apply the architecture incrementally when adding or changing a feature. Do not perform broad folder moves or mass component extraction without a concrete task, tests and a reviewable migration plan.
+- Existing files may remain in their current locations until a scoped change touches them; do not treat folder conformity alone as a reason for risky refactoring.
 
 ## 5. API, auth and data safety
 
@@ -76,7 +113,8 @@ Before requesting review or merging, read [ANTI_PATTERN_REVIEW.md](ANTI_PATTERN_
 - Critical/High auth, privacy, account-isolation, duplicate-generation or credit-display findings block merge.
 - Deferred findings must be recorded in the bug register with reason and next step.
 - New confirmed anti-patterns get an individual `AP-WEB-NNN.md` file and index entry.
-- When fixed, move the bug report to `fixed-bugs/`, record fix timestamp and evidence, and update both indexes. Use `FIXED` until tests/verification justify `VERIFIED`.
+- New architecture/coding-rule findings get an individual `CR-WEB-NNN.md` file and index entry.
+- When fixed, move the bug report to `fixed-bugs/`, record fix timestamp, commit and evidence, and update both indexes. Use `FIXED` until tests/verification justify `VERIFIED`.
 
 ## 9. Validation commands
 
