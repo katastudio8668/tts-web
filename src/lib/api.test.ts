@@ -3,11 +3,12 @@ import { ApiError, apiRequest } from './api';
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });
 
 describe('apiRequest', () => {
-  it('uses the versioned local API base URL and attaches the bearer token', async () => {
+  it('uses the development API base URL and attaches the bearer token', async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ id: 'user-1' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -20,6 +21,17 @@ describe('apiRequest', () => {
     const [url, options] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(url).toBe('http://localhost:3058/api/v1/me');
     expect(new Headers(options.headers).get('Authorization')).toBe('Bearer access-token');
+  });
+
+  it('fails fast when the production API base URL is missing', async () => {
+    vi.resetModules();
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', true);
+    vi.stubEnv('VITE_API_BASE_URL', '');
+
+    await expect(import('./api')).rejects.toThrow(
+      'VITE_API_BASE_URL must be configured outside development.',
+    );
   });
 
   it('normalizes validation arrays from NestJS', async () => {
