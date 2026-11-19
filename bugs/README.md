@@ -8,8 +8,8 @@
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
 | Anti-pattern | 8 | HIGH |
-| Coding Rule | 4 | MEDIUM |
-| **Tổng** | **12** | |
+| Coding Rule | 5 | MEDIUM |
+| **Tổng** | **13** | |
 
 ## Anti-pattern — HIGH
 
@@ -32,6 +32,7 @@
 | [CR-WEB-002 — Formatting không nhất quán](cr-web-002.md) | MEDIUM | OPEN |
 | [CR-WEB-003 — ESLint chưa enforce unused imports/formatting](cr-web-003.md) | MEDIUM | OPEN |
 | [CR-WEB-004 — Không có lockfile cho dependency frontend](cr-web-004.md) | MEDIUM | OPEN |
+| [CR-WEB-005 — Thiếu test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | OPEN |
 
 ## Quy ước
 
