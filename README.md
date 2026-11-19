@@ -2,6 +2,10 @@
 
 Responsive React + TypeScript customer app for the KATA TTS service.
 
+## AI-assisted development
+
+AI coding agents must read [AGENTS.md](AGENTS.md), [AI Coding Rules](docs/engineering/AI_CODING_RULES.md) and the [Mandatory Anti-Pattern Review](docs/engineering/ANTI_PATTERN_REVIEW.md) before changing or reviewing code. The review checklist is a required pre-merge gate.
+
 ## Stack
 
 - Vite + React + TypeScript
