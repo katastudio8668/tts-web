@@ -10,7 +10,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "typecheck": "tsc -b --pretty false"
+    "typecheck": "tsc -b --pretty false",
+    "format": "prettier --write src/pages/PlansPage.tsx src/pages/PaymentResultPage.tsx src/pages/DashboardPage.tsx src/pages/HistoryPage.tsx src/lib/api.ts src/features/auth/AuthProvider.tsx",
+    "format:check": "prettier --check src/pages/PlansPage.tsx src/pages/PaymentResultPage.tsx src/pages/DashboardPage.tsx src/pages/HistoryPage.tsx src/lib/api.ts src/features/auth/AuthProvider.tsx"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -37,6 +39,7 @@
     "eslint": "^9.39.1",
     "@eslint/js": "^9.39.1",
     "typescript-eslint": "^8.46.2",
-    "globals": "^16.5.0"
+    "globals": "^16.5.0",
+    "prettier": "3.6.2"
   }
 }
