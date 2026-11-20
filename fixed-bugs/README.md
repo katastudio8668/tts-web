@@ -16,6 +16,7 @@
 | [CR-WEB-003 — ESLint enforce unused variables thành lỗi](cr-web-003.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ CI |
 | [CR-WEB-006 — Phân định feature module và layer trong frontend](cr-web-006.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ test/typecheck |
 | [CR-WEB-005 — Bổ sung test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ chạy test suite |
+| [CR-WEB-002 — Chuẩn hóa định dạng frontend bằng Prettier](cr-web-002.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ chạy format check |
 
 ## Quy trình
 
