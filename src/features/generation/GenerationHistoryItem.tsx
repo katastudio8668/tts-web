@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Download, Play } from 'lucide-react';
 import { fetchAudio, type Generation } from '../../lib/api';
 import { generationStatusLabel } from './generationPresentation';
@@ -7,24 +7,49 @@ export default function GenerationHistoryItem({ item, token }: { item: Generatio
   const [audioUrl, setAudioUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const audioAbortController = useRef<AbortController | null>(null);
+
+  useEffect(() => () => {
+    audioAbortController.current?.abort();
+  }, []);
 
   useEffect(() => () => {
     if (audioUrl) URL.revokeObjectURL(audioUrl);
   }, [audioUrl]);
 
   async function loadAudio() {
+    if (loading) return;
+
+    const controller = new AbortController();
+    audioAbortController.current?.abort();
+    audioAbortController.current = controller;
     setLoading(true);
     setError('');
     try {
-      const nextUrl = await fetchAudio(`/generations/${item.id}/audio`, token);
+      const nextUrl = await fetchAudio(
+        `/generations/${item.id}/audio`,
+        token,
+        { signal: controller.signal },
+      );
+      if (controller.signal.aborted) {
+        URL.revokeObjectURL(nextUrl);
+        return;
+      }
       setAudioUrl((previous) => {
         if (previous) URL.revokeObjectURL(previous);
         return nextUrl;
       });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Không thể tải audio.');
+      if (!controller.signal.aborted) {
+        setError(cause instanceof Error ? cause.message : 'Không thể tải audio.');
+      }
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+        if (audioAbortController.current === controller) {
+          audioAbortController.current = null;
+        }
+      }
     }
   }
 
@@ -44,7 +69,7 @@ export default function GenerationHistoryItem({ item, token }: { item: Generatio
             <Play size={16} />
           </button>
         )}
-        {audioUrl && <a className="icon-button" aria-label="Tải WAV" href={audioUrl} download={`korva-${item.id}.wav`}><Download size={16} /></a>}
+        {audioUrl && <a className="icon-button" aria-label="Tải WAV" href={audioUrl} download={`korva-${item.id}.wav`}><Download size={16}/></a>}
       </div>
     </div>
   );
