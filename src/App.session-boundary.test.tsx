@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -6,13 +6,13 @@ import { ProtectedLayout } from './App';
 
 const { authState } = vi.hoisted(() => ({
   authState: {
-    session: { user: { id: 'user-a' } },
+    session: { user: { id: 'user-a' as string } },
     loading: false,
   },
 }));
 
 vi.mock('./features/auth/AuthProvider', () => ({
-  AuthProvider: ({ children }: { children: React.ReactNode }) => children,
+  AuthProvider: ({ children }: { children: ReactNode }) => children,
   useAuth: () => authState,
 }));
 
