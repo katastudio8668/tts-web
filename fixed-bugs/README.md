@@ -12,6 +12,7 @@
 | [AP-WEB-007 — Polling generation có deadline và backoff](ap-web-007.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](ap-web-004.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 | [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](ap-web-005.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
+| [CR-WEB-001 — Xóa import Usage không sử dụng](cr-web-001.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — source diff verified; chờ typecheck |
 
 
 ## Quy trình
