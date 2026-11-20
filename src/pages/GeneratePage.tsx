@@ -6,7 +6,7 @@ import {
   WandSparkles,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { generationStatusLabel } from '../lib/api';
+import { generationStatusLabel } from '../features/generation/generationPresentation';
 import { useGenerationStudio } from '../features/generation/useGenerationStudio';
 
 export default function GeneratePage() {
