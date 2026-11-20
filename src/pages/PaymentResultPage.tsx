@@ -104,7 +104,9 @@ export default function PaymentResultPage() {
 
         {order && (
           <>
-            <div className={`payment-result-symbol ${paid ? 'success' : pending ? 'waiting' : 'failure'}`}>
+            <div
+              className={`payment-result-symbol ${paid ? 'success' : pending ? 'waiting' : 'failure'}`}
+            >
               {paid
                 ? <CheckCircle2 size={40} />
                 : pending
@@ -142,7 +144,9 @@ export default function PaymentResultPage() {
               </div>
               <div>
                 <span>Trạng thái</span>
-                <strong className={`payment-status ${paid ? 'paid' : pending ? 'pending' : 'failed'}`}>
+                <strong
+                  className={`payment-status ${paid ? 'paid' : pending ? 'pending' : 'failed'}`}
+                >
                   {paymentStatusLabel(order.status)}
                 </strong>
               </div>
