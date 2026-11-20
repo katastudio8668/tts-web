@@ -99,9 +99,11 @@ export async function fetchAudio(
   init: RequestInit = {},
 ): Promise<string> {
   const { response, signal } = await requestResponse(path, token, { ...init, method: 'GET' });
+  let audioBlob: Blob;
   try {
-    return URL.createObjectURL(await response.blob());
+    audioBlob = await response.blob();
   } catch (error) {
     normalizeTransportError(error, signal, init.signal);
   }
+  return URL.createObjectURL(audioBlob);
 }
