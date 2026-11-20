@@ -12,6 +12,88 @@ export function formatVnd(amount:number):string{return new Intl.NumberFormat('vi
 const configuredApiBaseUrl=import.meta.env.VITE_API_BASE_URL?.trim();
 if(!configuredApiBaseUrl&&!import.meta.env.DEV)throw new Error('VITE_API_BASE_URL must be configured outside development.');
 const API_BASE_URL=(configuredApiBaseUrl||'http://localhost:3058/api/v1').replace(/\/+$/,'');
-export class ApiError extends Error{constructor(message:string,readonly status:number){super(message);this.name='ApiError';}}
-export async function apiRequest<T>(path:string,accessToken:string,init:RequestInit={}):Promise<T>{const headers=new Headers(init.headers);headers.set('Authorization',`Bearer ${accessToken}`);if(init.body&&!(init.body instanceof FormData))headers.set('Content-Type','application/json');let response:Response;try{response=await fetch(`${API_BASE_URL}${path.startsWith('/')?path:`/${path}`}`,{...init,headers,signal:init.signal??AbortSignal.timeout(30000)});}catch(error){if(error instanceof DOMException&&error.name==='TimeoutError')throw new ApiError('Yêu cầu quá thời gian chờ. Vui lòng thử lại.',408);throw new ApiError('Không thể kết nối máy chủ. Hãy kiểm tra kết nối mạng.',0);}if(!response.ok){const body=await response.json().catch(()=>null) as {message?:string|string[]}|null;const fallback=response.status===401?'Phiên đăng nhập đã hết hạn.':response.status===402?'Tài khoản không đủ credit để tạo giọng nói.':response.status===429?'Bạn thao tác quá nhanh. Vui lòng thử lại sau.':'Máy chủ chưa thể xử lý yêu cầu.';throw new ApiError(response.status===402?fallback:Array.isArray(body?.message)?body.message.join(', '):body?.message??fallback,response.status);}if(response.status===204)return undefined as T;return response.json() as Promise<T>;}
-export async function fetchAudio(path:string,token:string):Promise<string>{const response=await fetch(`${API_BASE_URL}${path.startsWith('/')?path:`/${path}`}`,{headers:{Authorization:`Bearer ${token}`},signal:AbortSignal.timeout(30000)});if(!response.ok)throw new ApiError('Không thể tải tệp âm thanh.',response.status);return URL.createObjectURL(await response.blob());}
+export class ApiError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+const REQUEST_TIMEOUT_MS = 30_000;
+
+function normalizeApiError(status: number, message?: string | string[]): ApiError {
+  const fallback = status === 401
+    ? 'Phiên đăng nhập đã hết hạn.'
+    : status === 402
+      ? 'Tài khoản không đủ credit để tạo giọng nói.'
+      : status === 429
+        ? 'Bạn thao tác quá nhanh. Vui lòng thử lại sau.'
+        : 'Máy chủ chưa thể xử lý yêu cầu.';
+  const normalizedMessage = status === 402
+    ? fallback
+    : Array.isArray(message)
+      ? message.join(', ')
+      : message || fallback;
+  return new ApiError(normalizedMessage, status);
+}
+
+async function requestResponse(
+  path: string,
+  accessToken: string,
+  init: RequestInit = {},
+): Promise<Response> {
+  const headers = new Headers(init.headers);
+  headers.set('Authorization', `Bearer ${accessToken}`);
+  if (init.body && !(init.body instanceof FormData)) {
+    headers.set('Content-Type', 'application/json');
+  }
+
+  const timeoutSignal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  const signal = init.signal
+    ? AbortSignal.any([init.signal, timeoutSignal])
+    : timeoutSignal;
+
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`,
+      { ...init, headers, signal },
+    );
+    if (!response.ok) {
+      const body = await response.json().catch(() => null) as
+        | { message?: string | string[] }
+        | null;
+      throw normalizeApiError(response.status, body?.message);
+    }
+    return response;
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    if (init.signal?.aborted) throw error;
+    if (error instanceof DOMException && error.name === 'AbortError') throw error;
+    if (
+      (error instanceof DOMException && error.name === 'TimeoutError')
+      || (signal.aborted && signal.reason instanceof DOMException && signal.reason.name === 'TimeoutError')
+    ) {
+      throw new ApiError('Yêu cầu quá thời gian chờ. Vui lòng thử lại.', 408);
+    }
+    throw new ApiError('Không thể kết nối máy chủ. Hãy kiểm tra kết nối mạng.', 0);
+  }
+}
+
+export async function apiRequest<T>(
+  path: string,
+  accessToken: string,
+  init: RequestInit = {},
+): Promise<T> {
+  const response = await requestResponse(path, accessToken, init);
+  if (response.status === 204) return undefined as T;
+  return response.json() as Promise<T>;
+}
+
+export async function fetchAudio(
+  path: string,
+  token: string,
+  init: RequestInit = {},
+): Promise<string> {
+  const response = await requestResponse(path, token, { ...init, method: 'GET' });
+  return URL.createObjectURL(await response.blob());
+}
