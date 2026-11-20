@@ -63,7 +63,11 @@ describe('fetchAudio', () => {
   it('uses the shared bearer transport and returns a URL for binary audio', async () => {
     const blob = new Blob(['audio-bytes'], { type: 'audio/wav' });
     const fetchMock = vi.fn().mockResolvedValue(new Response(blob, { status: 200 }));
-    const createObjectURL = vi.fn(() => 'blob:audio-result');
+    const createObjectURL = vi.fn((audioBlob: Blob) => {
+      expect(audioBlob.type).toBe('audio/wav');
+      expect(audioBlob.size).toBe(blob.size);
+      return 'blob:audio-result';
+    });
     vi.stubGlobal('fetch', fetchMock);
     vi.stubGlobal('URL', { ...URL, createObjectURL, revokeObjectURL: vi.fn() });
 
@@ -75,7 +79,7 @@ describe('fetchAudio', () => {
     expect(url).toBe('http://localhost:3058/api/v1/generations/job-1/audio');
     expect(new Headers(options.headers).get('Authorization')).toBe('Bearer audio-token');
     expect(options.signal).toBeInstanceOf(AbortSignal);
-    expect(createObjectURL).toHaveBeenCalledWith(blob);
+    expect(createObjectURL).toHaveBeenCalledTimes(1);
   });
 
   it('normalizes server error messages and status just like apiRequest', async () => {
