@@ -12,6 +12,7 @@
 | [AP-WEB-007 — Polling generation có deadline và backoff](ap-web-007.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](ap-web-004.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 | [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](ap-web-005.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
+| [AP-WEB-009 — Protected workspace reset khi đổi tài khoản](ap-web-009.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 | [CR-WEB-001 — Xóa import Usage không sử dụng](cr-web-001.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — source diff verified; chờ typecheck |
 | [CR-WEB-003 — ESLint enforce unused variables thành lỗi](cr-web-003.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ CI |
 | [CR-WEB-006 — Phân định feature module và layer trong frontend](cr-web-006.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ test/typecheck |
