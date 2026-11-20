@@ -11,7 +11,7 @@
 | Đã sửa (xem fixed-bugs) | 8 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
 | **Tổng số bug đã ghi nhận** | **14** | |
-| **Còn mở** | **4** | |
+| **Còn mở** | **3** | |
 
 ## Anti-pattern — HIGH
 
@@ -39,7 +39,6 @@
 | [CR-WEB-002 — Formatting không nhất quán](cr-web-002.md) | MEDIUM | OPEN |
 | [CR-WEB-004 — Không có lockfile cho dependency frontend](cr-web-004.md) | MEDIUM | OPEN |
 | [CR-WEB-005 — Thiếu test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | OPEN |
-| [CR-WEB-006 — Chưa phân định rõ feature module và các layer trong FE](cr-web-006.md) | MEDIUM | OPEN |
 
 ## Đã sửa — MEDIUM
 
@@ -47,6 +46,7 @@
 |---|---|---|
 | [CR-WEB-001 — Xóa import Usage không sử dụng](../fixed-bugs/cr-web-001.md) | MEDIUM | FIXED — chờ typecheck |
 | [CR-WEB-003 — ESLint enforce unused variables thành lỗi](../fixed-bugs/cr-web-003.md) | MEDIUM | FIXED — chờ CI |
+| [CR-WEB-006 — Phân định feature module và layer trong frontend](../fixed-bugs/cr-web-006.md) | MEDIUM | FIXED — chờ test/typecheck |
 
 ## Quy ước
 
