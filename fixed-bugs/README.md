@@ -10,6 +10,7 @@
 | [AP-WEB-001 — Retry mua credit tái sử dụng Idempotency-Key](ap-web-001.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 | [AP-WEB-002 — Polling trạng thái thanh toán có giới hạn](ap-web-002.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-007 — Polling generation có deadline và backoff](ap-web-007.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
+| [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](ap-web-004.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 
 
 ## Quy trình
