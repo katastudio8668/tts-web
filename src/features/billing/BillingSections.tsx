@@ -11,9 +11,8 @@ import {
   Wallet,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { formatVnd, paymentStatusLabel } from './billingPresentation';
 import {
-  formatVnd,
-  paymentStatusLabel,
   type CreditPackage,
   type PaymentOrder,
   type Plan,
