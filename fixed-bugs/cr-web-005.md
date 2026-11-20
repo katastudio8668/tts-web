@@ -20,6 +20,7 @@
 - `20aa781`, `9dcd015`: generation studio integration test.
 - `421b9ba`: payment result component tests.
 - `1603266`, `9e1c552`: auth sign-out success/failure tests; follow-up correction keeps all cases inside the test suite.
+- `53d8e7b`, `c3691b3`: refine pending generation mock and remove an unused test import.
 - `be6e263`, `eb7bbdf`: generation request intent và test retry.
 - `33ed573`, `d245ecd`, `99d54ef`: generation/billing presentation tests.
 
