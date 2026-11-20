@@ -100,4 +100,35 @@ describe('useGenerationStudio', () => {
       totalSteps: 32,
     });
   });
+  it('aborts an in-flight audio download when the studio unmounts', async () => {
+    apiRequestMock.mockImplementation((path: string, _token: string, init?: RequestInit) => {
+      if (path === '/generations' && init?.method === 'POST') {
+        return Promise.resolve({ ...createdJob, status: 'SUCCEEDED' });
+      }
+      return Promise.resolve([]);
+    });
+    fetchAudioMock.mockImplementation(
+      (_path: string, _token: string, _init?: RequestInit) => new Promise(() => {}),
+    );
+
+    const { result, unmount } = renderHook(() => useGenerationStudio(), {
+      wrapper: createWrapper(),
+    });
+
+    await act(async () => {
+      result.current.submitGeneration();
+    });
+    await waitFor(() => expect(result.current.job?.id).toBe('job-1'));
+
+    act(() => {
+      void result.current.playAudio();
+    });
+    await waitFor(() => expect(fetchAudioMock).toHaveBeenCalledTimes(1));
+    const requestSignal = fetchAudioMock.mock.calls[0][2].signal as AbortSignal;
+
+    unmount();
+
+    expect(requestSignal.aborted).toBe(true);
+  });
+
 });
