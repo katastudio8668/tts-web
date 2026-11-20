@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Download, Play } from 'lucide-react';
-import { fetchAudio, generationStatusLabel, type Generation } from '../../lib/api';
+import { fetchAudio, type Generation } from '../../lib/api';
+import { generationStatusLabel } from './generationPresentation';
 
 export default function GenerationHistoryItem({ item, token }: { item: Generation; token: string }) {
   const [audioUrl, setAudioUrl] = useState('');
