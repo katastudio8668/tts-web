@@ -12,19 +12,7 @@ import {
   getGenerationPollingInterval,
   GENERATION_POLL_MAX_DURATION_MS,
 } from './generationPolling';
-
-type GenerationPayload = {
-  text: string;
-  voiceId: string;
-  language: string;
-  speed: number;
-  totalSteps: number;
-};
-
-type PendingRequest = {
-  fingerprint: string;
-  key: string;
-};
+import { getGenerationRequestIntent, type GenerationPayload, type GenerationRequestIntent } from './generationRequest';
 
 export function useGenerationStudio() {
   const { session } = useAuth();
@@ -40,7 +28,7 @@ export function useGenerationStudio() {
   const [audioUrl, setAudioUrl] = useState('');
   const [audioError, setAudioError] = useState('');
   const [audioLoading, setAudioLoading] = useState(false);
-  const [pendingRequest, setPendingRequest] = useState<PendingRequest | null>(null);
+  const [pendingRequest, setPendingRequest] = useState<GenerationRequestIntent | null>(null);
 
   const voices = useQuery({
     queryKey: ['voices'],
@@ -116,13 +104,10 @@ export function useGenerationStudio() {
       speed,
       totalSteps: 32,
     };
-    const fingerprint = JSON.stringify(payload);
-    const key = pendingRequest?.fingerprint === fingerprint
-      ? pendingRequest.key
-      : crypto.randomUUID();
+    const intent = getGenerationRequestIntent(payload, pendingRequest);
 
-    setPendingRequest({ fingerprint, key });
-    create.mutate({ payload, idempotencyKey: key });
+    setPendingRequest(intent);
+    create.mutate({ payload, idempotencyKey: intent.key });
   }
 
   async function playAudio() {
