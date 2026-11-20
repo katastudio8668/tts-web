@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getPaymentOrdersRefreshInterval } from './paymentOrdersRefresh';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getPurchaseIntent,
@@ -37,7 +38,7 @@ export function usePlansBilling(token: string) {
     queryKey: ['payment-orders'],
     queryFn: () => apiRequest<PaymentOrder[]>('/payments/orders', token),
     enabled: Boolean(token),
-    refetchInterval: 30_000,
+    refetchInterval: (query) => getPaymentOrdersRefreshInterval(query.state.data),
   });
 
   const purchase = useMutation({
