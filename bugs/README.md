@@ -7,11 +7,11 @@
 
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
-| Anti-pattern đang mở | 6 | HIGH |
-| Đã sửa (xem fixed-bugs) | 2 | HIGH |
+| Anti-pattern đang mở | 5 | HIGH |
+| Đã sửa (xem fixed-bugs) | 3 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
 | **Tổng số bug đã ghi nhận** | **14** | |
-| **Còn mở** | **12** | |
+| **Còn mở** | **11** | |
 
 ## Anti-pattern — HIGH
 
@@ -22,7 +22,7 @@
 | [AP-WEB-004 — PlansPage ôm nhiều trách nhiệm](ap-web-004.md) | HIGH | OPEN |
 | [AP-WEB-005 — fetchAudio chưa dùng chung error/transport policy](ap-web-005.md) | HIGH | OPEN |
 | [AP-WEB-007 — Polling generation không giới hạn](ap-web-007.md) | HIGH | OPEN |
-| [AP-WEB-008 — Query cache không tách/xóa khi đổi tài khoản](ap-web-008.md) | HIGH | OPEN |
+
 
 ## Đã sửa — HIGH
 
@@ -30,6 +30,7 @@
 |---|---|---|
 | [AP-WEB-006 — Retry generation tái sử dụng idempotency key](../fixed-bugs/ap-web-006.md) | 2026-11-19 18:49:38 +07:00 | FIXED — chờ CI/browser |
 | [AP-WEB-003 — API URL production không còn fallback localhost](../fixed-bugs/ap-web-003.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + production smoke test |
+| [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](../fixed-bugs/ap-web-008.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
