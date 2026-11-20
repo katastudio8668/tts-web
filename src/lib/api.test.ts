@@ -99,6 +99,15 @@ describe('fetchAudio', () => {
       status: 408,
     });
 
+    const timeoutController = new AbortController();
+    timeoutController.abort(new DOMException('The operation timed out', 'TimeoutError'));
+    vi.spyOn(AbortSignal, 'timeout').mockReturnValue(timeoutController.signal);
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new DOMException('Aborted', 'AbortError')));
+    await expect(fetchAudio('/generations/job-1/audio', 'token')).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 408,
+    });
+
     const abortError = new DOMException('The operation was aborted', 'AbortError');
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(abortError));
     await expect(fetchAudio('/generations/job-1/audio', 'token')).rejects.toBe(abortError);
