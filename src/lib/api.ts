@@ -6,9 +6,6 @@ export type Plan={id:string;code:string;name:string;monthlyCredits:number;maxCha
 export type CreditPackage={id:string;code:string;name:string;description?:string|null;priceVnd:number;credits:number};
 export type PaymentOrder={id:string;orderCode:string;amountVnd:number;credits:number;currency:'VND';provider:'VNPAY';status:'PENDING'|'PAID'|'FAILED'|'EXPIRED'|'CANCELLED';expiresAt:string;paidAt?:string|null;createdAt:string;updatedAt:string;responseCode?:string|null;providerTransactionNo?:string|null;bankCode?:string|null;bankTranNo?:string|null};
 export type CreatePaymentOrderResponse={order:PaymentOrder;paymentUrl:string|null;duplicate:boolean};
-export function generationStatusLabel(status:Generation['status']):string{return ({QUEUED:'Đang chờ',RUNNING:'Đang tạo',SUCCEEDED:'Hoàn tất',FAILED:'Thất bại',CANCELLED:'Đã hủy'})[status];}
-export function paymentStatusLabel(status:PaymentOrder['status']):string{return ({PENDING:'Chờ thanh toán',PAID:'Đã thanh toán',FAILED:'Thanh toán thất bại',EXPIRED:'Đã hết hạn',CANCELLED:'Đã hủy'})[status];}
-export function formatVnd(amount:number):string{return new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(amount);}
 const configuredApiBaseUrl=import.meta.env.VITE_API_BASE_URL?.trim();
 if(!configuredApiBaseUrl&&!import.meta.env.DEV)throw new Error('VITE_API_BASE_URL must be configured outside development.');
 const API_BASE_URL=(configuredApiBaseUrl||'http://localhost:3058/api/v1').replace(/\/+$/,'');
