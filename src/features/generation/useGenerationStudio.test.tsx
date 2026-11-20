@@ -57,7 +57,7 @@ describe('useGenerationStudio', () => {
         return Promise.resolve(createdJob);
       }
       if (path === '/generations/job-1') {
-        return new Promise(() => undefined);
+        return new Promise(() => {});
       }
       return Promise.resolve(null);
     });
