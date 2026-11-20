@@ -15,6 +15,7 @@
 | [CR-WEB-001 — Xóa import Usage không sử dụng](cr-web-001.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — source diff verified; chờ typecheck |
 | [CR-WEB-003 — ESLint enforce unused variables thành lỗi](cr-web-003.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ CI |
 | [CR-WEB-006 — Phân định feature module và layer trong frontend](cr-web-006.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ test/typecheck |
+| [CR-WEB-005 — Bổ sung test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | 2026-11-20 (UTC+07:00) | FIXED — chờ chạy test suite |
 
 ## Quy trình
 
