@@ -21,4 +21,6 @@
 - **Commit timeout normalization:** `fe48ea1dd0d514ba9c7ff28156eb0ebd329c02cb`.
 - **Commit timeout regression:** `41696006596c007d03679781374bb576cc1178e1`.
 - **Commit tinh chỉnh assertion binary Blob:** `068a752811ee679f41c2b14b8b89bb946137f01f`.
+- **Commit tách object URL khỏi transport error handling:** `2eaeff5a3a44fbb0742e764a151f01f19da77d56`.
+- **Commit regression test lỗi khi đọc audio Blob:** `49cfc5888c1ef5969ab3e9ba2973404904ce85b8`.
 - **Xác minh:** Chưa chạy unit test, typecheck, lint, build hoặc browser/API test. Chưa có bằng chứng CI. Trạng thái giữ ở `FIXED`, không nâng thành `VERIFIED`.
