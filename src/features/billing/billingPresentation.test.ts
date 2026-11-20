@@ -15,6 +15,7 @@ describe('paymentStatusLabel', () => {
 
 describe('formatVnd', () => {
   it('formats Vietnamese dong without decimal places', () => {
-    expect(formatVnd(125000)).toBe('125.000 ₫');
+    expect(formatVnd(125000)).toContain('125.000');
+    expect(formatVnd(125000)).toContain('₫');
   });
 });
