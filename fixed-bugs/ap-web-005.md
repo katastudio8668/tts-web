@@ -20,4 +20,5 @@
 - **Commit caller signal regression:** `079852181e436eefcfaa63fb81093ffadde4fb22`.
 - **Commit timeout normalization:** `fe48ea1dd0d514ba9c7ff28156eb0ebd329c02cb`.
 - **Commit timeout regression:** `41696006596c007d03679781374bb576cc1178e1`.
+- **Commit tinh chỉnh assertion binary Blob:** `068a752811ee679f41c2b14b8b89bb946137f01f`.
 - **Xác minh:** Chưa chạy unit test, typecheck, lint, build hoặc browser/API test. Chưa có bằng chứng CI. Trạng thái giữ ở `FIXED`, không nâng thành `VERIFIED`.
