@@ -30,6 +30,7 @@
 | [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](../fixed-bugs/ap-web-008.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |
 | [AP-WEB-001 — Retry mua credit tái sử dụng Idempotency-Key](../fixed-bugs/ap-web-001.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 | [AP-WEB-002 — Polling trạng thái thanh toán có giới hạn](../fixed-bugs/ap-web-002.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
+| [AP-WEB-007 — Polling generation có deadline và backoff](../fixed-bugs/ap-web-007.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
