@@ -37,11 +37,23 @@ function normalizeApiError(status: number, message?: string | string[]): ApiErro
   return new ApiError(normalizedMessage, status);
 }
 
+function normalizeTransportError(error: unknown, signal: AbortSignal, callerSignal?: AbortSignal | null): never {
+  if (callerSignal?.aborted) throw error;
+  if (error instanceof DOMException && error.name === 'AbortError') throw error;
+  if (
+    (error instanceof DOMException && error.name === 'TimeoutError')
+    || (signal.aborted && signal.reason instanceof DOMException && signal.reason.name === 'TimeoutError')
+  ) {
+    throw new ApiError('Yêu cầu quá thời gian chờ. Vui lòng thử lại.', 408);
+  }
+  throw new ApiError('Không thể kết nối máy chủ. Hãy kiểm tra kết nối mạng.', 0);
+}
+
 async function requestResponse(
   path: string,
   accessToken: string,
   init: RequestInit = {},
-): Promise<Response> {
+): Promise<{ response: Response; signal: AbortSignal }> {
   const headers = new Headers(init.headers);
   headers.set('Authorization', `Bearer ${accessToken}`);
   if (init.body && !(init.body instanceof FormData)) {
@@ -64,18 +76,10 @@ async function requestResponse(
         | null;
       throw normalizeApiError(response.status, body?.message);
     }
-    return response;
+    return { response, signal };
   } catch (error) {
     if (error instanceof ApiError) throw error;
-    if (init.signal?.aborted) throw error;
-    if (error instanceof DOMException && error.name === 'AbortError') throw error;
-    if (
-      (error instanceof DOMException && error.name === 'TimeoutError')
-      || (signal.aborted && signal.reason instanceof DOMException && signal.reason.name === 'TimeoutError')
-    ) {
-      throw new ApiError('Yêu cầu quá thời gian chờ. Vui lòng thử lại.', 408);
-    }
-    throw new ApiError('Không thể kết nối máy chủ. Hãy kiểm tra kết nối mạng.', 0);
+    normalizeTransportError(error, signal, init.signal);
   }
 }
 
@@ -84,7 +88,7 @@ export async function apiRequest<T>(
   accessToken: string,
   init: RequestInit = {},
 ): Promise<T> {
-  const response = await requestResponse(path, accessToken, init);
+  const { response } = await requestResponse(path, accessToken, init);
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
 }
@@ -94,6 +98,10 @@ export async function fetchAudio(
   token: string,
   init: RequestInit = {},
 ): Promise<string> {
-  const response = await requestResponse(path, token, { ...init, method: 'GET' });
-  return URL.createObjectURL(await response.blob());
+  const { response, signal } = await requestResponse(path, token, { ...init, method: 'GET' });
+  try {
+    return URL.createObjectURL(await response.blob());
+  } catch (error) {
+    normalizeTransportError(error, signal, init.signal);
+  }
 }
