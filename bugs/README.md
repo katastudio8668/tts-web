@@ -30,7 +30,8 @@
 | [AP-WEB-002 — Polling trạng thái thanh toán có giới hạn](../fixed-bugs/ap-web-002.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-007 — Polling generation có deadline và backoff](../fixed-bugs/ap-web-007.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](../fixed-bugs/ap-web-004.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
-| [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](../fixed-bugs/ap-web-005.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |\n| [AP-WEB-009 — Protected workspace reset khi đổi tài khoản](../fixed-bugs/ap-web-009.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
+| [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](../fixed-bugs/ap-web-005.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
+| [AP-WEB-009 — Protected workspace reset khi đổi tài khoản](../fixed-bugs/ap-web-009.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
