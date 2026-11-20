@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AuthProvider } from './AuthProvider';
+import { AuthProvider, useAuth } from './AuthProvider';
 
 const { authState, mockSupabase } = vi.hoisted(() => {
   const state: { callback: ((event: string, session: unknown) => void) | null } = { callback: null };
@@ -14,9 +14,51 @@ const { authState, mockSupabase } = vi.hoisted(() => {
     },
   };
   return { authState: state, mockSupabase: supabaseMock };
+
+  it('keeps the current user cache when the server rejects sign-out', async () => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(['usage'], { balance: 900 });
+    mockSupabase.auth.signOut.mockRejectedValueOnce(new Error('Sign-out failed'));
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider><AuthActions /></AuthProvider>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => expect(authState.callback).toBeTypeOf('function'));
+    fireEvent.click(screen.getByRole('button', { name: 'Sign out' }));
+
+    await waitFor(() => expect(mockSupabase.auth.signOut).toHaveBeenCalledTimes(1));
+    expect(queryClient.getQueryData(['usage'])).toEqual({ balance: 900 });
+  });
+
+  it('clears cached account data after the server confirms sign-out', async () => {
+    queryClient = new QueryClient();
+    queryClient.setQueryData(['usage'], { balance: 900 });
+    mockSupabase.auth.signOut.mockResolvedValueOnce({ error: null });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider><AuthActions /></AuthProvider>
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => expect(authState.callback).toBeTypeOf('function'));
+    fireEvent.click(screen.getByRole('button', { name: 'Sign out' }));
+
+    await waitFor(() => expect(mockSupabase.auth.signOut).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(queryClient.getQueryCache().getAll()).toHaveLength(0));
+  });
+
 });
 
 vi.mock('../../lib/supabase', () => ({ supabase: mockSupabase }));
+
+function AuthActions() {
+  const { signOut } = useAuth();
+  return <button onClick={() => void signOut().catch(() => undefined)}>Sign out</button>;
+}
 
 const session = (userId: string) => ({
   access_token: `token-${userId}`,
