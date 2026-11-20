@@ -11,7 +11,7 @@
 | Đã sửa (xem fixed-bugs) | 8 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
 | **Tổng số bug đã ghi nhận** | **14** | |
-| **Còn mở** | **5** | |
+| **Còn mở** | **4** | |
 
 ## Anti-pattern — HIGH
 
@@ -30,14 +30,13 @@
 | [AP-WEB-002 — Polling trạng thái thanh toán có giới hạn](../fixed-bugs/ap-web-002.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-007 — Polling generation có deadline và backoff](../fixed-bugs/ap-web-007.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 | [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](../fixed-bugs/ap-web-004.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
-| [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](../fixed-bugs/ap-web-005.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
+| [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](../fixed-bugs/ap-web-005.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
 | Bug | Ưu tiên | Trạng thái |
 |---|---|---|
 | [CR-WEB-002 — Formatting không nhất quán](cr-web-002.md) | MEDIUM | OPEN |
-| [CR-WEB-003 — ESLint chưa enforce unused imports/formatting](cr-web-003.md) | MEDIUM | OPEN |
 | [CR-WEB-004 — Không có lockfile cho dependency frontend](cr-web-004.md) | MEDIUM | OPEN |
 | [CR-WEB-005 — Thiếu test generation, billing và session lifecycle](cr-web-005.md) | MEDIUM | OPEN |
 | [CR-WEB-006 — Chưa phân định rõ feature module và các layer trong FE](cr-web-006.md) | MEDIUM | OPEN |
@@ -47,6 +46,7 @@
 | Bug | Mức độ | Trạng thái |
 |---|---|---|
 | [CR-WEB-001 — Xóa import Usage không sử dụng](../fixed-bugs/cr-web-001.md) | MEDIUM | FIXED — chờ typecheck |
+| [CR-WEB-003 — ESLint enforce unused variables thành lỗi](../fixed-bugs/cr-web-003.md) | MEDIUM | FIXED — chờ CI |
 
 ## Quy ước
 
