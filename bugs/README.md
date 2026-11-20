@@ -7,17 +7,16 @@
 
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
-| Anti-pattern đang mở | 4 | HIGH |
-| Đã sửa (xem fixed-bugs) | 4 | HIGH |
+| Anti-pattern đang mở | 3 | HIGH |
+| Đã sửa (xem fixed-bugs) | 5 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
 | **Tổng số bug đã ghi nhận** | **14** | |
-| **Còn mở** | **10** | |
+| **Còn mở** | **9** | |
 
 ## Anti-pattern — HIGH
 
 | Bug | Ưu tiên | Trạng thái |
 |---|---|---|
-| [AP-WEB-002 — Polling trạng thái thanh toán không giới hạn](ap-web-002.md) | HIGH | OPEN |
 | [AP-WEB-004 — PlansPage ôm nhiều trách nhiệm](ap-web-004.md) | HIGH | OPEN |
 | [AP-WEB-005 — fetchAudio chưa dùng chung error/transport policy](ap-web-005.md) | HIGH | OPEN |
 | [AP-WEB-007 — Polling generation không giới hạn](ap-web-007.md) | HIGH | OPEN |
@@ -31,6 +30,7 @@
 | [AP-WEB-003 — API URL production không còn fallback localhost](../fixed-bugs/ap-web-003.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + production smoke test |
 | [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](../fixed-bugs/ap-web-008.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |
 | [AP-WEB-001 — Retry mua credit tái sử dụng Idempotency-Key](../fixed-bugs/ap-web-001.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
+| [AP-WEB-002 — Polling trạng thái thanh toán có giới hạn](../fixed-bugs/ap-web-002.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser/API verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
