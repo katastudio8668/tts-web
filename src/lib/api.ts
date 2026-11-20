@@ -39,13 +39,13 @@ function normalizeApiError(status: number, message?: string | string[]): ApiErro
 
 function normalizeTransportError(error: unknown, signal: AbortSignal, callerSignal?: AbortSignal | null): never {
   if (callerSignal?.aborted) throw error;
-  if (error instanceof DOMException && error.name === 'AbortError') throw error;
   if (
     (error instanceof DOMException && error.name === 'TimeoutError')
     || (signal.aborted && signal.reason instanceof DOMException && signal.reason.name === 'TimeoutError')
   ) {
     throw new ApiError('Yêu cầu quá thời gian chờ. Vui lòng thử lại.', 408);
   }
+  if (error instanceof DOMException && error.name === 'AbortError') throw error;
   throw new ApiError('Không thể kết nối máy chủ. Hãy kiểm tra kết nối mạng.', 0);
 }
 
