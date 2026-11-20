@@ -8,9 +8,9 @@
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
 | Anti-pattern đang mở | 0 | HIGH |
-| Đã sửa (xem fixed-bugs) | 9 | HIGH |
+| Đã sửa (xem fixed-bugs) | 10 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
-| **Tổng số bug đã ghi nhận** | **15** | |
+| **Tổng số bug đã ghi nhận** | **16** | |
 | **Còn mở** | **1** | |
 
 ## Anti-pattern — HIGH
@@ -32,6 +32,7 @@
 | [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](../fixed-bugs/ap-web-004.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 | [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](../fixed-bugs/ap-web-005.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 | [AP-WEB-009 — Protected workspace reset khi đổi tài khoản](../fixed-bugs/ap-web-009.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
+| [AP-WEB-010 — Payment history chỉ refresh khi có đơn pending](../fixed-bugs/ap-web-010.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
