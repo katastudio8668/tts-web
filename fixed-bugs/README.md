@@ -6,7 +6,7 @@
 |---|---|---|---|
 | [AP-WEB-006 — Retry generation tái sử dụng idempotency key](ap-web-006.md) | HIGH | 2026-11-19 18:49:38 +07:00 | FIXED — chờ CI/browser |
 | [AP-WEB-003 — API URL production không còn fallback localhost](ap-web-003.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + production smoke test |
-| [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](ap-web-008.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |
+| [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](ap-web-008.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |\n| [AP-WEB-001 — Retry mua credit tái sử dụng Idempotency-Key](ap-web-001.md) | HIGH | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 
 
 ## Quy trình
