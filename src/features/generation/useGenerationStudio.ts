@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../auth/AuthProvider';
 import {
@@ -29,6 +29,7 @@ export function useGenerationStudio() {
   const [audioError, setAudioError] = useState('');
   const [audioLoading, setAudioLoading] = useState(false);
   const [pendingRequest, setPendingRequest] = useState<GenerationRequestIntent | null>(null);
+  const audioAbortController = useRef<AbortController | null>(null);
 
   const voices = useQuery({
     queryKey: ['voices'],
@@ -44,6 +45,9 @@ export function useGenerationStudio() {
         body: JSON.stringify(request.payload),
       }),
     onSuccess: (data) => {
+      audioAbortController.current?.abort();
+      audioAbortController.current = null;
+      setAudioLoading(false);
       setJob(data);
       setAudioUrl('');
       void queryClient.invalidateQueries({ queryKey: ['usage'] });
@@ -93,6 +97,10 @@ export function useGenerationStudio() {
   }, [status.data, queryClient]);
 
   useEffect(() => () => {
+    audioAbortController.current?.abort();
+  }, []);
+
+  useEffect(() => () => {
     if (audioUrl) URL.revokeObjectURL(audioUrl);
   }, [audioUrl]);
 
@@ -113,18 +121,36 @@ export function useGenerationStudio() {
   async function playAudio() {
     if (!job || audioLoading) return;
 
+    const controller = new AbortController();
+    audioAbortController.current?.abort();
+    audioAbortController.current = controller;
     setAudioLoading(true);
     setAudioError('');
     try {
-      const nextUrl = await fetchAudio(`/generations/${job.id}/audio`, token);
+      const nextUrl = await fetchAudio(
+        `/generations/${job.id}/audio`,
+        token,
+        { signal: controller.signal },
+      );
+      if (controller.signal.aborted) {
+        URL.revokeObjectURL(nextUrl);
+        return;
+      }
       setAudioUrl((previous) => {
         if (previous) URL.revokeObjectURL(previous);
         return nextUrl;
       });
     } catch (error) {
-      setAudioError(error instanceof Error ? error.message : 'Không thể tải audio.');
+      if (!controller.signal.aborted) {
+        setAudioError(error instanceof Error ? error.message : 'Không thể tải audio.');
+      }
     } finally {
-      setAudioLoading(false);
+      if (!controller.signal.aborted) {
+        setAudioLoading(false);
+        if (audioAbortController.current === controller) {
+          audioAbortController.current = null;
+        }
+      }
     }
   }
 
