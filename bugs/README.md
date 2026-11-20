@@ -7,11 +7,11 @@
 
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
-| Anti-pattern đang mở | 5 | HIGH |
-| Đã sửa (xem fixed-bugs) | 3 | HIGH |
+| Anti-pattern đang mở | 4 | HIGH |
+| Đã sửa (xem fixed-bugs) | 4 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
 | **Tổng số bug đã ghi nhận** | **14** | |
-| **Còn mở** | **11** | |
+| **Còn mở** | **10** | |
 
 ## Anti-pattern — HIGH
 
@@ -30,7 +30,7 @@
 |---|---|---|
 | [AP-WEB-006 — Retry generation tái sử dụng idempotency key](../fixed-bugs/ap-web-006.md) | 2026-11-19 18:49:38 +07:00 | FIXED — chờ CI/browser |
 | [AP-WEB-003 — API URL production không còn fallback localhost](../fixed-bugs/ap-web-003.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + production smoke test |
-| [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](../fixed-bugs/ap-web-008.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |
+| [AP-WEB-008 — Query cache được xóa khi đổi tài khoản hoặc đăng xuất](../fixed-bugs/ap-web-008.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ CI/test + browser verification |\n| [AP-WEB-001 — Retry mua credit tái sử dụng Idempotency-Key](../fixed-bugs/ap-web-001.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
