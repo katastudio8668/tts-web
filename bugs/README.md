@@ -1,6 +1,6 @@
 # Bug Register — KATA TTS Web
 
-> Cập nhật: 2026-11-20 (UTC+07:00)  
+> Cập nhật: 2026-11-21 (UTC+07:00)  
 > Mỗi bug được quản lý trong một file riêng. Danh sách dưới đây là chỉ mục theo nhóm và mức ưu tiên.
 
 ## Tổng quan
@@ -8,9 +8,9 @@
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
 | Anti-pattern đang mở | 0 | HIGH |
-| Đã sửa (xem fixed-bugs) | 10 | HIGH |
+| Đã sửa (xem fixed-bugs) | 11 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
-| **Tổng số bug đã ghi nhận** | **16** | |
+| **Tổng số bug đã ghi nhận** | **17** | |
 | **Còn mở** | **1** | |
 
 ## Anti-pattern — HIGH
@@ -32,7 +32,7 @@
 | [AP-WEB-004 — PlansPage tách hook dữ liệu và UI sections](../fixed-bugs/ap-web-004.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
 | [AP-WEB-005 — fetchAudio dùng chung transport và ApiError policy](../fixed-bugs/ap-web-005.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + API/browser verification |
 | [AP-WEB-009 — Protected workspace reset khi đổi tài khoản](../fixed-bugs/ap-web-009.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test + browser verification |
-| [AP-WEB-010 — Payment history chỉ refresh khi có đơn pending](../fixed-bugs/ap-web-010.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test verification |
+| [AP-WEB-010 — Payment history chỉ refresh khi có đơn pending](../fixed-bugs/ap-web-010.md) | 2026-11-20 (UTC+07:00) | FIXED — chờ test verification |\n| [AP-WEB-011 — Hủy request tải audio khi rời trang](../fixed-bugs/ap-web-011.md) | 2026-11-21 (UTC+07:00) | FIXED — chờ test/runtime verification |
 
 ## Coding Rule / Architecture — MEDIUM
 
