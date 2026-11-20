@@ -117,6 +117,21 @@ describe('fetchAudio', () => {
     await expect(fetchAudio('/generations/job-1/audio', 'token')).rejects.toBe(abortError);
   });
 
+  it('normalizes network failures while reading the audio blob', async () => {
+    const response = {
+      ok: true,
+      status: 200,
+      blob: vi.fn().mockRejectedValue(new TypeError('The response body was interrupted')),
+    };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response));
+
+    await expect(fetchAudio('/generations/job-1/audio', 'token')).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 0,
+      message: 'Không thể kết nối máy chủ. Hãy kiểm tra kết nối mạng.',
+    });
+  });
+
   it('normalizes network failures into the shared ApiError model', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')));
 
