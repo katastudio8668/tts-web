@@ -7,11 +7,11 @@
 
 | Nhóm | Số lượng | Ưu tiên |
 |---|---:|---|
-| Anti-pattern đang mở | 3 | HIGH |
-| Đã sửa (xem fixed-bugs) | 5 | HIGH |
+| Anti-pattern đang mở | 2 | HIGH |
+| Đã sửa (xem fixed-bugs) | 6 | HIGH |
 | Coding Rule / Architecture | 6 | MEDIUM |
 | **Tổng số bug đã ghi nhận** | **14** | |
-| **Còn mở** | **9** | |
+| **Còn mở** | **8** | |
 
 ## Anti-pattern — HIGH
 
@@ -19,7 +19,6 @@
 |---|---|---|
 | [AP-WEB-004 — PlansPage ôm nhiều trách nhiệm](ap-web-004.md) | HIGH | OPEN |
 | [AP-WEB-005 — fetchAudio chưa dùng chung error/transport policy](ap-web-005.md) | HIGH | OPEN |
-| [AP-WEB-007 — Polling generation không giới hạn](ap-web-007.md) | HIGH | OPEN |
 
 
 ## Đã sửa — HIGH
