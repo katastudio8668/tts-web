@@ -26,6 +26,11 @@ Các file được format theo phạm vi đã ghi nhận; không chạy format t
 - Thêm `npm run format:check` để kiểm tra định dạng.
 - CI gọi `npm run format:check` trước lint/typecheck/test/build.
 
+## Commit source/config
+
+- `ff9c683`, `89858bf`, `02f603c`, `bcd116b`: format lại Dashboard, Payment Result, API transport và AuthProvider.
+- `b62bfc1`, `c4ca991`, `3e4a9c7`: pin Prettier, thêm config/scripts và format check vào CI.
+
 ## Xác minh
 
 - Đã rà soát diff source và xác nhận phạm vi formatter được giới hạn ở sáu file nêu trên.
