@@ -2,7 +2,7 @@
 
 - **Mức độ:** HIGH
 - **Trạng thái:** FIXED — chờ test/runtime verification
-- **Branch:** `main`
+- **Branch:** `main`\n- **Commits:** source `617bba06`, history `14c92eed`, regression test `5b73367d`, report `a280573e`, indexes `2f51ccfe` and `be6ee9aa`
 - **Ngày sửa:** 2026-11-21 (UTC+07:00)
 
 ## Vấn đề
