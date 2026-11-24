@@ -144,17 +144,17 @@ describe('fetchAudio', () => {
 
   it('passes a caller-provided abort signal through the shared transport', async () => {
     const controller = new AbortController();
-    let requestSignal: AbortSignal | null = null;
+    const capturedRequest = { signal: null as AbortSignal | null };
     vi.stubGlobal('fetch', vi.fn().mockImplementation(async (_url: string, options: RequestInit) => {
-      requestSignal = options.signal as AbortSignal;
+      capturedRequest.signal = options.signal as AbortSignal;
       return new Response(new Blob(['audio']), { status: 200 });
     }));
 
     await fetchAudio('/generations/job-1/audio', 'token', { signal: controller.signal });
 
-    expect(requestSignal).toBeInstanceOf(AbortSignal);
-    expect(requestSignal).not.toBe(controller.signal);
+    expect(capturedRequest.signal).toBeInstanceOf(AbortSignal);
+    expect(capturedRequest.signal).not.toBe(controller.signal);
     controller.abort();
-    expect(requestSignal?.aborted).toBe(true);
+    expect(capturedRequest.signal?.aborted).toBe(true);
   });
 });
