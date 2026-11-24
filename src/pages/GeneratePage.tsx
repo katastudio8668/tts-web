@@ -5,12 +5,24 @@ import {
   Sparkles,
   WandSparkles,
 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../features/auth/AuthProvider';
+import { formatCharacters, freeTierSummary } from '../features/billing/freeTier';
+import { apiRequest, type Usage } from '../lib/api';
 import { generationStatusLabel } from '../features/generation/generationPresentation';
 import { useGenerationStudio } from '../features/generation/useGenerationStudio';
 
 export default function GeneratePage() {
   const studio = useGenerationStudio();
+  const { session } = useAuth();
+  const token = session?.access_token ?? '';
+  const usage = useQuery({
+    queryKey: ['usage'],
+    queryFn: () => apiRequest<Usage>('/usage', token),
+    enabled: Boolean(token),
+  });
+  const free = freeTierSummary(usage.data);
   const {
     text,
     setText,
@@ -62,6 +74,12 @@ export default function GeneratePage() {
             <span>{text.length.toLocaleString('vi-VN')} / 10.000 ký tự</span>
             <span>Kiểm tra dấu câu để giọng đọc tự nhiên hơn.</span>
           </div>
+          {free && (
+            <p className="free-tier-note" role="status">
+              Miễn phí tuần này còn <strong>{formatCharacters(free.remaining)}</strong> / {formatCharacters(free.weekly)} ký tự.
+              {' '}Ký tự miễn phí được dùng trước, phần vượt quá mới trừ credit.
+            </p>
+          )}
 
           <div className="panel-divider" />
 

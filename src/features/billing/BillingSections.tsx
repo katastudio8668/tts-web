@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { formatVnd, paymentStatusLabel } from './billingPresentation';
+import { formatCharacters, freeTierSummary } from './freeTier';
 import {
   type CreditPackage,
   type PaymentOrder,
@@ -34,6 +35,7 @@ export function UsageBalanceCard({
   usage: Usage | undefined;
   onRefresh: () => void;
 }) {
+  const free = freeTierSummary(usage);
   return (
     <section className="usage-highlight">
       <div className="usage-icon"><Wallet size={22} /></div>
@@ -41,7 +43,15 @@ export function UsageBalanceCard({
         <span>Credit khả dụng</span>
         <strong>{usage?.balance?.toLocaleString('vi-VN') ?? '—'}</strong>
       </div>
-      <small>{usage?.planName ?? 'Tín dụng mua thêm không phải gói thuê bao'}</small>
+      <small>
+        {usage?.planName ?? 'Tín dụng mua thêm không phải gói thuê bao'}
+        {free && (
+          <>
+            <br />
+            Miễn phí tuần này: còn {formatCharacters(free.remaining)} / {formatCharacters(free.weekly)} ký tự
+          </>
+        )}
+      </small>
       <button className="secondary-button balance-refresh" onClick={onRefresh}>
         <RefreshCw size={14} /> Làm mới
       </button>

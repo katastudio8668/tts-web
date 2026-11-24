@@ -4,11 +4,13 @@ import {
   AudioLines,
   Clock3,
   Coins,
+  Gift,
   Sparkles,
   WandSparkles,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../features/auth/AuthProvider';
+import { formatCharacters, freeTierSummary } from '../features/billing/freeTier';
 import { generationStatusLabel } from '../features/generation/generationPresentation';
 import { apiRequest, type Generation, type Me, type Usage } from '../lib/api';
 
@@ -31,6 +33,8 @@ export default function DashboardPage() {
     queryFn: () => apiRequest<Generation[]>('/generations?limit=5', token),
     enabled: Boolean(token),
   });
+
+  const free = freeTierSummary(usage.data);
 
   const first = me.data?.displayName?.split(' ')[0]
     ?? session?.user.user_metadata?.full_name?.split(' ')[0]
@@ -60,6 +64,18 @@ export default function DashboardPage() {
           <strong>{usage.data?.balance?.toLocaleString('vi-VN') ?? '—'}</strong>
           <small>Credit khả dụng</small>
         </article>
+        {free && (
+          <article className="stat-card">
+            <div className="stat-top">
+              <span>Miễn phí tuần này</span>
+              <span className="stat-icon green"><Gift size={18} /></span>
+            </div>
+            <strong>{formatCharacters(free.remaining)}</strong>
+            <small>
+              / {formatCharacters(free.weekly)} ký tự · làm mới {free.resetsLabel}
+            </small>
+          </article>
+        )}
         <article className="stat-card">
           <div className="stat-top">
             <span>Đã sử dụng tháng này</span>

@@ -10,6 +10,7 @@ import HistoryPage from './pages/HistoryPage';
 import PlansPage from './pages/PlansPage';
 import AccountPage from './pages/AccountPage';
 import PaymentResultPage from './pages/PaymentResultPage';
+import AdminPage from './pages/AdminPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ export default function App() {
                   <Route path="/plans" element={<PlansPage />} />
                   <Route path="/account" element={<AccountPage />} />
                   <Route path="/payment/result" element={<PaymentResultPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

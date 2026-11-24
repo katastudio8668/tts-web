@@ -23,11 +23,27 @@ export type Me = {
   role: string;
 };
 
+/** Weekly free character allowance; the week starts Monday 00:00 Vietnam time. */
+export type FreeTierUsage = {
+  weeklyCharacters: number;
+  usedThisWeek: number;
+  remainingThisWeek: number;
+  weekStartsAt: string;
+  resetsAt: string;
+};
+
 export type Usage = {
   balance: number;
   reserved: number;
   usedThisMonth: number;
   planName?: string | null;
+  freeTier?: FreeTierUsage;
+};
+
+export type FreeTierSetting = {
+  weeklyCharacters: number;
+  updatedAt: string;
+  updatedBy: string | null;
 };
 
 export type Plan = {
