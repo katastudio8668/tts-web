@@ -1,63 +1,13 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { AuthProvider, useAuth } from './features/auth/AuthProvider';
-import AppShell from './components/AppShell';
-import KataStudioFooter from './components/KataStudioFooter';
-import SignInPage from './pages/SignInPage';
-import DashboardPage from './pages/DashboardPage';
-import GeneratePage from './pages/GeneratePage';
-import HistoryPage from './pages/HistoryPage';
-import PlansPage from './pages/PlansPage';
-import AccountPage from './pages/AccountPage';
-import PaymentResultPage from './pages/PaymentResultPage';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { staleTime: 15000, retry: 1, refetchOnWindowFocus: false },
-  },
-});
-
-export function ProtectedLayout() {
-  const { session, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="screen-center">
-        <span className="spinner" />
-        Đang kiểm tra phiên đăng nhập…
-      </div>
-    );
-  }
-
-  if (!session) return <Navigate to="/signin" replace />;
-
-  return <AppShell key={session.user.id} />;
-}
-
-export default function App() {
+export default function KataStudioFooter() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <BrowserRouter>
-          <div className="app-root">
-            <div className="app-main">
-              <Routes>
-                <Route path="/signin" element={<SignInPage />} />
-                <Route element={<ProtectedLayout />}>
-                  <Route path="/" element={<DashboardPage />} />
-                  <Route path="/generate" element={<GeneratePage />} />
-                  <Route path="/history" element={<HistoryPage />} />
-                  <Route path="/plans" element={<PlansPage />} />
-                  <Route path="/account" element={<AccountPage />} />
-                  <Route path="/payment/result" element={<PaymentResultPage />} />
-                </Route>
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </div>
-            <KataStudioFooter />
-          </div>
-        </BrowserRouter>
-      </AuthProvider>
-    </QueryClientProvider>
+    <footer className="kata-product-attribution" aria-label="Thông tin thương hiệu">
+      <span className="kata-product-attribution__balance" aria-hidden="true" />
+      <div className="kata-product-attribution__content">
+        <span className="kata-product-attribution__label">KATA TTS là một sản phẩm của</span>
+        <span className="kata-product-attribution__separator" aria-hidden="true">·</span>
+        <strong className="kata-product-attribution__brand">KATA STUDIO</strong>
+      </div>
+      <span className="kata-product-attribution__balance" aria-hidden="true" />
+    </footer>
   );
 }
