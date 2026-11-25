@@ -4,6 +4,8 @@ export type GenerationPayload = {
   language: string;
   speed: number;
   totalSteps: number;
+  sentencePause: number;
+  paragraphPause: number;
 };
 
 export type GenerationRequestIntent = {
