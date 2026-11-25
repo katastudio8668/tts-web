@@ -50,6 +50,7 @@ export default function GeneratePage() {
     paragraphPause,
     setParagraphPause,
     maxTextCharacters,
+    baseCreditsPerCharacter,
     job,
     voices,
     create,
@@ -98,7 +99,7 @@ export default function GeneratePage() {
             <span>
               {text.length.toLocaleString('vi-VN')} / {maxTextCharacters.toLocaleString('vi-VN')} ký tự
               {selectedVoice && text.trim() && (
-                <> · ước tính {formatCharacters(estimateCredits(text.trim().length, selectedVoice))} credit</>
+                <> · ước tính {formatCharacters(estimateCredits(text.trim().length, selectedVoice, baseCreditsPerCharacter))} credit</>
               )}
             </span>
             <span>Giọng TTS Group 2 hỗ trợ thẻ cảm xúc {EMOTION_CUES.join(' ')}.</span>
@@ -106,7 +107,7 @@ export default function GeneratePage() {
           {free && (
             <p className="free-tier-note" role="status">
               Miễn phí tuần này còn <strong>{formatCharacters(free.remaining)}</strong> / {formatCharacters(free.weekly)} credit.
-              {' '}Credit miễn phí được dùng trước, phần vượt quá mới trừ số dư. Giọng thường: 1 ký tự = 1 credit.
+              {' '}Credit miễn phí được dùng trước, phần vượt quá mới trừ số dư. Giọng thường: {baseCreditsPerCharacter.toLocaleString('vi-VN')} credit/ký tự.
             </p>
           )}
 
