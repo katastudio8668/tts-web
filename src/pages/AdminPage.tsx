@@ -52,7 +52,7 @@ export default function AdminPage() {
     && parsedMaxCharacters >= 1 && parsedMaxCharacters <= MAX_TEXT_CHARACTERS;
   const validRate = creditsPerCharacter.trim() !== '' && Number.isFinite(parsedRate)
     && parsedRate >= 0.001 && parsedRate <= MAX_CREDITS_PER_CHARACTER
-    && /^\\d+(?:\\.\\d{1,3})?$/.test(creditsPerCharacter);
+    && /^\d+(?:\.\d{1,3})?$/.test(creditsPerCharacter);
   const validWeekly = weeklyCredits.trim() !== '' && Number.isInteger(parsedWeeklyCredits)
     && parsedWeeklyCredits >= 0 && parsedWeeklyCredits <= MAX_WEEKLY_CREDITS;
   const valid = validMax && validRate && validWeekly;
