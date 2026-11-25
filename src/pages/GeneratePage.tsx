@@ -49,6 +49,7 @@ export default function GeneratePage() {
     setSentencePause,
     paragraphPause,
     setParagraphPause,
+    maxTextCharacters,
     job,
     voices,
     create,
@@ -90,12 +91,12 @@ export default function GeneratePage() {
             className="text-editor"
             value={text}
             onChange={(event) => setText(event.target.value)}
-            maxLength={10000}
+            maxLength={maxTextCharacters}
             placeholder={samplePlaceholder}
           />
           <div className="editor-footer">
             <span>
-              {text.length.toLocaleString('vi-VN')} / 10.000 ký tự
+              {text.length.toLocaleString('vi-VN')} / {maxTextCharacters.toLocaleString('vi-VN')} ký tự
               {selectedVoice && text.trim() && (
                 <> · ước tính {formatCharacters(estimateCredits(text.trim().length, selectedVoice))} credit</>
               )}
