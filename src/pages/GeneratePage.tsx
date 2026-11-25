@@ -45,6 +45,10 @@ export default function GeneratePage() {
     samplePlaceholder,
     speed,
     setSpeed,
+    sentencePause,
+    setSentencePause,
+    paragraphPause,
+    setParagraphPause,
     job,
     voices,
     create,
@@ -141,6 +145,21 @@ export default function GeneratePage() {
             />
           </div>
 
+          <div className="settings-row">
+            <label htmlFor="sentence-pause">
+              Nghỉ giữa câu <strong>{sentencePause.toFixed(2)} s</strong>
+            </label>
+            <input id="sentence-pause" type="range" min="0" max="2" step=".05" value={sentencePause}
+              onChange={(event) => setSentencePause(Number(event.target.value))} />
+          </div>
+          <div className="settings-row">
+            <label htmlFor="paragraph-pause">
+              Nghỉ giữa đoạn (xuống dòng) <strong>{paragraphPause.toFixed(2)} s</strong>
+            </label>
+            <input id="paragraph-pause" type="range" min="0" max="3" step=".05" value={paragraphPause}
+              onChange={(event) => setParagraphPause(Number(event.target.value))} />
+          </div>
+
           <VoiceTonePanel token={token} />
 
           <div className="generate-actions">
@@ -217,6 +236,21 @@ export default function GeneratePage() {
               <span className={`job-status ${job.status.toLowerCase()}`}>
                 {generationStatusLabel(job.status)}
               </span>
+
+              {['QUEUED', 'RUNNING'].includes(job.status) && (
+                <div className="generation-progress" role="status" aria-live="polite">
+                  <div className="generation-progress-heading">
+                    <span>{job.progressMessage ?? (job.status === 'QUEUED' ? 'Đang chờ xử lý' : 'Đang chuẩn bị tổng hợp')}</span>
+                    <strong>{Math.max(0, Math.min(99, job.progressPercent ?? 0))}%</strong>
+                  </div>
+                  <div className="generation-progress-track">
+                    <div className="generation-progress-value" style={{ width: `${Math.max(0, Math.min(99, job.progressPercent ?? 0))}%` }} />
+                  </div>
+                  {(job.progressTotalChunks ?? 0) > 0 && (
+                    <small>Đã xử lý {job.progressCompletedChunks ?? 0}/{job.progressTotalChunks} đoạn</small>
+                  )}
+                </div>
+              )}
 
               {job.status === 'FAILED' && (
                 <p className="inline-error">
