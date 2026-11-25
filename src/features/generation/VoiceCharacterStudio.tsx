@@ -70,10 +70,10 @@ export function VoiceCharacterStudio() {
             <AudioLines size={16}/>
             <span><strong>{models.find(item => item.id === model)?.name}</strong><small>Model đã chọn cho hồ sơ này</small></span>
           </div>
-          <button className="character-create-button" type="button" disabled={!sample || !name.trim()}>
-            <WandSparkles size={16}/> Tạo hồ sơ giọng
+          <button className="character-create-button" type="button" disabled aria-describedby="character-integration-note">
+            <WandSparkles size={16}/> Tính năng clone sắp ra mắt
           </button>
-          <p className="character-integration-note">Giao diện đang được chuẩn bị. Chức năng clone sẽ được kết nối với engine ở bước tích hợp tiếp theo.</p>
+          <p id="character-integration-note" className="character-integration-note">Hiện có thể chọn tệp mẫu và model để xem trước cấu hình. Chức năng tạo hồ sơ sẽ được bật sau khi API clone giọng sẵn sàng.</p>
         </div>
       </div>
     </section>
