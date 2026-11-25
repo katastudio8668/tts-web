@@ -7,6 +7,8 @@ const payload: GenerationPayload = {
   language: 'vi',
   speed: 1,
   totalSteps: 32,
+  sentencePause: 0.5,
+  paragraphPause: 1.5,
 };
 
 describe('getGenerationRequestIntent', () => {
