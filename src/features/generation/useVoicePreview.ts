@@ -3,6 +3,7 @@ import { useAuth } from '../auth/AuthProvider';
 import { fetchAudio } from '../../lib/api';
 
 export type VoicePreviewError = { voiceId: string; message: string };
+export type VoicePreviewConfig = { speed: number; tone?: { id: string; intensity: number } };
 
 /**
  * Plays the free, server-cached sample of a voice. Samples are fetched once per mount and kept as
@@ -33,7 +34,7 @@ export function useVoicePreview() {
     };
   }, []);
 
-  const toggle = useCallback(async (voiceId: string) => {
+  const toggle = useCallback(async (voiceId: string, config?: VoicePreviewConfig) => {
     if (playingId === voiceId) {
       stop();
       return;
@@ -43,13 +44,19 @@ export function useVoicePreview() {
     setPlayingId(null);
     setError(null);
 
-    let url = urls.current.get(voiceId);
+    const cacheKey = config
+      ? `${voiceId}|speed=${config.speed}|tone=${config.tone?.id ?? 'original'}|intensity=${config.tone?.intensity ?? 0.7}`
+      : voiceId;
+    let url = urls.current.get(cacheKey);
     if (!url) {
       const request = new AbortController();
       controller.current = request;
       setLoadingId(voiceId);
       try {
-        url = await fetchAudio(`/voices/${encodeURIComponent(voiceId)}/preview`, token, { signal: request.signal });
+        const query = config
+          ? `?speed=${encodeURIComponent(String(config.speed))}&toneId=${encodeURIComponent(config.tone?.id ?? 'original')}&toneIntensity=${encodeURIComponent(String(config.tone?.intensity ?? 0.7))}`
+          : '';
+        url = await fetchAudio(`/voices/${encodeURIComponent(voiceId)}/preview${query}`, token, { signal: request.signal });
       } catch (cause) {
         if (!request.signal.aborted) {
           setError({ voiceId, message: cause instanceof Error ? cause.message : 'Không phát được giọng mẫu.' });
@@ -62,7 +69,7 @@ export function useVoicePreview() {
         return;
       }
       controller.current = null;
-      urls.current.set(voiceId, url);
+      urls.current.set(cacheKey, url);
       setLoadingId(null);
     }
 
