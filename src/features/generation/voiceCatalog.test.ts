@@ -37,9 +37,10 @@ describe('voice catalog', () => {
   });
 
   it('estimates credits like the API: rounded up, without float artefacts', () => {
-    expect(estimateCredits(10, voices[0])).toBe(10);
-    expect(estimateCredits(11, { ...voices[0], creditsPerCharacter: 1.5 })).toBe(17);
-    expect(estimateCredits(10, { ...voices[0], creditsPerCharacter: 1.1 })).toBe(11);
-    expect(estimateCredits(10, voices[3])).toBe(10);
+    expect(estimateCredits(10, voices[0])).toBe(50);
+    expect(estimateCredits(11, { ...voices[0], creditsPerCharacter: 1.5 })).toBe(83);
+    expect(estimateCredits(10, { ...voices[0], creditsPerCharacter: 1.1 })).toBe(55);
+    expect(estimateCredits(10, voices[3])).toBe(50);
+    expect(estimateCredits(10, voices[0], 1)).toBe(10);
   });
 });
