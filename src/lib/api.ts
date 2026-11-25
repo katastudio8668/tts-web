@@ -18,6 +18,12 @@ export type Generation = {
   audioDuration?: number | null;
   createdAt: string;
   errorMessage?: string | null;
+  progressPercent?: number;
+  progressStage?: string;
+  progressMessage?: string;
+  progressCompletedChunks?: number;
+  progressTotalChunks?: number;
+  progressUpdatedAt?: string | null;
 };
 
 export type Me = {
