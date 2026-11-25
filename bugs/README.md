@@ -9,9 +9,9 @@
 |---|---:|---|
 | Anti-pattern đang mở | 0 | HIGH |
 | Đã sửa (xem fixed-bugs) | 11 | HIGH |
-| Coding Rule / Architecture | 6 | MEDIUM |
-| **Tổng số bug đã ghi nhận** | **17** | |
-| **Còn mở** | **1** | |
+| Coding Rule / Architecture | 7 | MEDIUM |
+| **Tổng số bug đã ghi nhận** | **18** | |
+| **Còn mở** | **2** | |
 
 ## Anti-pattern — HIGH
 
@@ -39,6 +39,7 @@
 | Bug | Ưu tiên | Trạng thái |
 |---|---|---|
 | [CR-WEB-004 — Không có lockfile cho dependency frontend](cr-web-004.md) | MEDIUM | OPEN |
+| [CR-WEB-007 — Nghe thử trong Studio không áp dụng tốc độ và tông giọng đã chọn](cr-web-007.md) | MEDIUM | OPEN |
 
 ## Đã sửa — MEDIUM
 
