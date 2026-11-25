@@ -72,7 +72,7 @@ export default function DashboardPage() {
             </div>
             <strong>{formatCharacters(free.remaining)}</strong>
             <small>
-              / {formatCharacters(free.weekly)} ký tự · làm mới {free.resetsLabel}
+              / {formatCharacters(free.weekly)} credit · làm mới {free.resetsLabel}
             </small>
           </article>
         )}

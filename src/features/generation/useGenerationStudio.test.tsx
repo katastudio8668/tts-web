@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { KORVA_SAMPLE_TEXT, VIENEU_SAMPLE_TEXT } from './sampleText';
 import { useGenerationStudio } from './useGenerationStudio';
 
 const { apiRequestMock, fetchAudioMock } = vi.hoisted(() => ({
@@ -67,6 +68,7 @@ describe('useGenerationStudio', () => {
     });
 
     await waitFor(() => expect(result.current.voices.data).toHaveLength(1));
+    expect(result.current.text).toBe(KORVA_SAMPLE_TEXT);
     act(() => {
       result.current.setText('Xin chào');
       result.current.setVoiceId('voice-1');
@@ -100,6 +102,25 @@ describe('useGenerationStudio', () => {
       totalSteps: 32,
     });
   });
+  it('switches the untouched sample text to the selected model family, but never replaces user text', async () => {
+    apiRequestMock.mockImplementation((path: string) => Promise.resolve(path === '/voices' ? [
+      { id: 'bao_kim', displayName: 'Bảo Kim', language: 'vi', engine: 'korva' },
+      { id: 'vieneu_adam', displayName: 'Adam', language: 'vi', engine: 'vieneu' },
+    ] : null));
+    const { result } = renderHook(() => useGenerationStudio(), { wrapper: createWrapper() });
+    await waitFor(() => expect(result.current.voices.data).toHaveLength(2));
+
+    act(() => result.current.setVoiceId('vieneu_adam'));
+    expect(result.current.text).toBe(VIENEU_SAMPLE_TEXT);
+    expect(result.current.samplePlaceholder).toBe(VIENEU_SAMPLE_TEXT);
+    act(() => result.current.setVoiceId('bao_kim'));
+    expect(result.current.text).toBe(KORVA_SAMPLE_TEXT);
+
+    act(() => result.current.setText('Văn bản của tôi'));
+    act(() => result.current.setVoiceId('vieneu_adam'));
+    expect(result.current.text).toBe('Văn bản của tôi');
+  });
+
   it('aborts an in-flight audio download when the studio unmounts', async () => {
     apiRequestMock.mockImplementation((path: string, _token: string, init?: RequestInit) => {
       if (path === '/generations' && init?.method === 'POST') {

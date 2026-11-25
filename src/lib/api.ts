@@ -3,6 +3,10 @@ export type Voice = {
   displayName: string;
   language: string;
   gender?: string | null;
+  /** Model family: 'korva' or 'vieneu'. */
+  engine?: string;
+  /** Credit multiplier per character: 1 for standard voices, higher for VIP voices. */
+  creditsPerCharacter?: number;
 };
 
 export type Generation = {
@@ -23,9 +27,9 @@ export type Me = {
   role: string;
 };
 
-/** Weekly free character allowance; the week starts Monday 00:00 Vietnam time. */
+/** Weekly free credit allowance; the week starts Monday 00:00 Vietnam time. */
 export type FreeTierUsage = {
-  weeklyCharacters: number;
+  weeklyCredits: number;
   usedThisWeek: number;
   remainingThisWeek: number;
   weekStartsAt: string;
@@ -41,7 +45,7 @@ export type Usage = {
 };
 
 export type FreeTierSetting = {
-  weeklyCharacters: number;
+  weeklyCredits: number;
   updatedAt: string;
   updatedBy: string | null;
 };

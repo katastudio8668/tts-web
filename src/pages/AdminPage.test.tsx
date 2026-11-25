@@ -16,13 +16,13 @@ vi.mock('../lib/api', async (importOriginal) => {
   return { ...actual, apiRequest: apiRequestMock };
 });
 
-function mockApi(role: string, weeklyCharacters = 1000) {
+function mockApi(role: string, weeklyCredits = 1000) {
   apiRequestMock.mockImplementation(async (path: string, _token: string, init?: RequestInit) => {
     if (path === '/me') return { id: 'u1', role };
     if (path === '/admin/free-tier' && init?.method === 'PUT') {
-      return { weeklyCharacters: JSON.parse(String(init.body)).weeklyCharacters, updatedAt: '2026-11-24T10:00:00.000Z', updatedBy: 'u1' };
+      return { weeklyCredits: JSON.parse(String(init.body)).weeklyCredits, updatedAt: '2026-11-24T10:00:00.000Z', updatedBy: 'u1' };
     }
-    if (path === '/admin/free-tier') return { weeklyCharacters, updatedAt: '2026-11-24T09:00:00.000Z', updatedBy: null };
+    if (path === '/admin/free-tier') return { weeklyCredits, updatedAt: '2026-11-24T09:00:00.000Z', updatedBy: null };
     throw new Error(`unexpected ${path}`);
   });
 }
@@ -46,24 +46,24 @@ describe('AdminPage', () => {
     expect(apiRequestMock).not.toHaveBeenCalledWith('/admin/free-tier', expect.anything());
   });
 
-  it('loads and saves the weekly free character allowance', async () => {
+  it('loads and saves the weekly free credit allowance', async () => {
     mockApi('ADMIN', 1000);
     renderPage();
-    const input = await screen.findByLabelText(/Số ký tự miễn phí/);
+    const input = await screen.findByLabelText(/Số credit miễn phí/);
     expect(input).toHaveValue(1000);
     await userEvent.clear(input);
     await userEvent.type(input, '5000');
     await userEvent.click(screen.getByRole('button', { name: 'Lưu cấu hình' }));
     expect(await screen.findByText('Đã lưu.')).toBeInTheDocument();
     expect(apiRequestMock).toHaveBeenCalledWith('/admin/free-tier', 'test-token', {
-      method: 'PUT', body: JSON.stringify({ weeklyCharacters: 5000 }),
+      method: 'PUT', body: JSON.stringify({ weeklyCredits: 5000 }),
     });
   });
 
   it('rejects invalid values before calling the API', async () => {
     mockApi('ADMIN', 1000);
     renderPage();
-    const input = await screen.findByLabelText(/Số ký tự miễn phí/);
+    const input = await screen.findByLabelText(/Số credit miễn phí/);
     await userEvent.clear(input);
     await userEvent.type(input, '-5');
     expect(screen.getByRole('button', { name: 'Lưu cấu hình' })).toBeDisabled();

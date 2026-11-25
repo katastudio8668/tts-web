@@ -10,11 +10,11 @@ export type FreeTierSummary = {
 /** Returns null when the administrator has not enabled a weekly free allowance. */
 export function freeTierSummary(usage: Usage | undefined): FreeTierSummary | null {
   const free = usage?.freeTier;
-  if (!free || free.weeklyCharacters <= 0) return null;
+  if (!free || free.weeklyCredits <= 0) return null;
   const resetsAt = new Date(free.resetsAt);
   return {
     remaining: free.remainingThisWeek,
-    weekly: free.weeklyCharacters,
+    weekly: free.weeklyCredits,
     used: free.usedThisWeek,
     resetsLabel: Number.isNaN(resetsAt.getTime())
       ? ''

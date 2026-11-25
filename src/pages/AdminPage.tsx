@@ -4,7 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useIsAdmin } from '../features/admin/useIsAdmin';
 import { apiRequest, type FreeTierSetting } from '../lib/api';
 
-const MAX_WEEKLY_CHARACTERS = 10_000_000;
+const MAX_WEEKLY_CREDITS = 100_000_000;
 
 export default function AdminPage() {
   const { isAdmin, isLoading, token } = useIsAdmin();
@@ -19,13 +19,13 @@ export default function AdminPage() {
   });
 
   useEffect(() => {
-    if (setting.data) setValue(String(setting.data.weeklyCharacters));
+    if (setting.data) setValue(String(setting.data.weeklyCredits));
   }, [setting.data]);
 
   const save = useMutation({
-    mutationFn: (weeklyCharacters: number) => apiRequest<FreeTierSetting>('/admin/free-tier', token, {
+    mutationFn: (weeklyCredits: number) => apiRequest<FreeTierSetting>('/admin/free-tier', token, {
       method: 'PUT',
-      body: JSON.stringify({ weeklyCharacters }),
+      body: JSON.stringify({ weeklyCredits }),
     }),
     onSuccess: (data) => {
       queryClient.setQueryData(['admin', 'free-tier'], data);
@@ -35,7 +35,7 @@ export default function AdminPage() {
   });
 
   const parsed = Number(value);
-  const valid = value.trim() !== '' && Number.isInteger(parsed) && parsed >= 0 && parsed <= MAX_WEEKLY_CHARACTERS;
+  const valid = value.trim() !== '' && Number.isInteger(parsed) && parsed >= 0 && parsed <= MAX_WEEKLY_CREDITS;
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -70,7 +70,7 @@ export default function AdminPage() {
         <div className="panel-heading">
           <div>
             <span className="step-label">GÓI MIỄN PHÍ</span>
-            <h2>Ký tự miễn phí mỗi tuần</h2>
+            <h2>Credit miễn phí mỗi tuần</h2>
           </div>
           <span className="stat-icon green"><Gift size={18} /></span>
         </div>
@@ -80,25 +80,25 @@ export default function AdminPage() {
 
         {setting.data && (
           <form className="admin-form" onSubmit={submit}>
-            <label htmlFor="weekly-characters">
-              Số ký tự miễn phí / người dùng / tuần
+            <label htmlFor="weekly-credits">
+              Số credit miễn phí / người dùng / tuần
               <input
-                id="weekly-characters"
+                id="weekly-credits"
                 type="number"
                 inputMode="numeric"
                 min={0}
-                max={MAX_WEEKLY_CHARACTERS}
+                max={MAX_WEEKLY_CREDITS}
                 step={1}
                 value={value}
                 onChange={(event) => { setValue(event.target.value); setSaved(false); }}
               />
             </label>
             <p className="admin-meta">
-              Tuần bắt đầu lúc 00:00 thứ Hai (giờ Việt Nam). Ký tự miễn phí được dùng trước, phần vượt quá mới trừ credit.
+              Tuần bắt đầu lúc 00:00 thứ Hai (giờ Việt Nam). Credit miễn phí được dùng trước, phần vượt quá mới trừ số dư. Giọng thường tốn 1 credit/ký tự, giọng VIP theo hệ số riêng. Mặc định 100.000.
               Đặt 0 để tắt gói miễn phí.
             </p>
             {!valid && value.trim() !== '' && (
-              <p className="inline-error" role="alert">Nhập số nguyên từ 0 đến {MAX_WEEKLY_CHARACTERS.toLocaleString('vi-VN')}.</p>
+              <p className="inline-error" role="alert">Nhập số nguyên từ 0 đến {MAX_WEEKLY_CREDITS.toLocaleString('vi-VN')}.</p>
             )}
             <div className="form-actions">
               <button className="primary-button" type="submit" disabled={!valid || save.isPending}>

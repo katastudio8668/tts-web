@@ -1,8 +1,10 @@
 import {
   AudioLines,
   Download,
+  Loader2,
   Play,
   Sparkles,
+  Square,
   WandSparkles,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -12,6 +14,10 @@ import { formatCharacters, freeTierSummary } from '../features/billing/freeTier'
 import { apiRequest, type Usage } from '../lib/api';
 import { generationStatusLabel } from '../features/generation/generationPresentation';
 import { useGenerationStudio } from '../features/generation/useGenerationStudio';
+import { useVoicePreview } from '../features/generation/useVoicePreview';
+import { VoicePicker } from '../features/generation/VoicePicker';
+import { EMOTION_CUES } from '../features/generation/sampleText';
+import { estimateCredits, voiceLabel } from '../features/generation/voiceCatalog';
 
 export default function GeneratePage() {
   const studio = useGenerationStudio();
@@ -23,11 +29,13 @@ export default function GeneratePage() {
     enabled: Boolean(token),
   });
   const free = freeTierSummary(usage.data);
+  const preview = useVoicePreview();
   const {
     text,
     setText,
     voiceId,
     setVoiceId,
+    samplePlaceholder,
     speed,
     setSpeed,
     job,
@@ -68,16 +76,21 @@ export default function GeneratePage() {
             value={text}
             onChange={(event) => setText(event.target.value)}
             maxLength={10000}
-            placeholder="Nhập hoặc dán nội dung bạn muốn chuyển thành giọng nói..."
+            placeholder={samplePlaceholder}
           />
           <div className="editor-footer">
-            <span>{text.length.toLocaleString('vi-VN')} / 10.000 ký tự</span>
-            <span>Kiểm tra dấu câu để giọng đọc tự nhiên hơn.</span>
+            <span>
+              {text.length.toLocaleString('vi-VN')} / 10.000 ký tự
+              {selectedVoice && text.trim() && (
+                <> · ước tính {formatCharacters(estimateCredits(text.trim().length, selectedVoice))} credit</>
+              )}
+            </span>
+            <span>Giọng VieNeu v3 hỗ trợ thẻ cảm xúc {EMOTION_CUES.join(' ')}.</span>
           </div>
           {free && (
             <p className="free-tier-note" role="status">
-              Miễn phí tuần này còn <strong>{formatCharacters(free.remaining)}</strong> / {formatCharacters(free.weekly)} ký tự.
-              {' '}Ký tự miễn phí được dùng trước, phần vượt quá mới trừ credit.
+              Miễn phí tuần này còn <strong>{formatCharacters(free.remaining)}</strong> / {formatCharacters(free.weekly)} credit.
+              {' '}Credit miễn phí được dùng trước, phần vượt quá mới trừ số dư. Giọng thường: 1 ký tự = 1 credit.
             </p>
           )}
 
@@ -98,25 +111,9 @@ export default function GeneratePage() {
             <p className="inline-error">Không tải được danh sách giọng.</p>
           )}
 
-          <div className="voice-grid">
-            {voices.data?.map((voice) => (
-              <button
-                type="button"
-                key={voice.id}
-                className={`voice-option ${voiceId === voice.id ? 'selected' : ''}`}
-                onClick={() => setVoiceId(voice.id)}
-              >
-                <span className="voice-avatar">
-                  <AudioLines size={18} />
-                </span>
-                <span>
-                  <strong>{voice.displayName}</strong>
-                  <small>{voice.gender ?? 'Vietnamese'} · {voice.language}</small>
-                </span>
-                <i />
-              </button>
-            ))}
-          </div>
+          {voices.data && (
+            <VoicePicker voices={voices.data} selectedId={voiceId} onSelect={setVoiceId} preview={preview} />
+          )}
 
           <div className="settings-row">
             <label htmlFor="speed">
@@ -133,15 +130,32 @@ export default function GeneratePage() {
             />
           </div>
 
-          <button
-            className="primary-button generate-button"
-            disabled={!canSubmit}
-            onClick={submitGeneration}
-          >
-            <WandSparkles size={17} />
-            {create.isPending ? 'Đang gửi yêu cầu…' : 'Tạo giọng nói'}
-            <Sparkles size={16} />
-          </button>
+          <div className="generate-actions">
+            <button
+              type="button"
+              className="secondary-button"
+              disabled={!voiceId}
+              title="Nghe giọng đang chọn đọc đoạn văn mẫu (miễn phí)"
+              onClick={() => void preview.toggle(voiceId)}
+            >
+              {preview.loadingId === voiceId && voiceId
+                ? <Loader2 size={16} className="spin" />
+                : preview.playingId === voiceId && voiceId ? <Square size={14} /> : <Play size={16} />}
+              {preview.playingId === voiceId && voiceId ? 'Dừng' : 'Nghe thử'}
+            </button>
+            <button
+              className="primary-button generate-button"
+              disabled={!canSubmit}
+              onClick={submitGeneration}
+            >
+              <WandSparkles size={17} />
+              {create.isPending ? 'Đang gửi yêu cầu…' : 'Tạo giọng nói'}
+              <Sparkles size={16} />
+            </button>
+          </div>
+          {!voiceId && voices.data && voices.data.length > 0 && (
+            <p className="inline-loading">Chọn một giọng để nghe thử hoặc tạo audio.</p>
+          )}
 
           {create.isError && (
             <div className="generation-error" role="alert">
@@ -262,7 +276,7 @@ export default function GeneratePage() {
       </div>
 
       {selectedVoice && (
-        <p className="selection-note">Đang chọn: {selectedVoice.displayName}</p>
+        <p className="selection-note">Đang chọn: {voiceLabel(selectedVoice)}</p>
       )}
     </div>
   );

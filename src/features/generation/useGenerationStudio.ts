@@ -12,6 +12,7 @@ import {
   getGenerationPollingInterval,
   GENERATION_POLL_MAX_DURATION_MS,
 } from './generationPolling';
+import { isSampleText, KORVA_SAMPLE_TEXT, sampleTextFor } from './sampleText';
 import { getGenerationRequestIntent, type GenerationPayload, type GenerationRequestIntent } from './generationRequest';
 
 export function useGenerationStudio() {
@@ -19,7 +20,7 @@ export function useGenerationStudio() {
   const queryClient = useQueryClient();
   const token = session?.access_token ?? '';
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState(KORVA_SAMPLE_TEXT);
   const [voiceId, setVoiceId] = useState('');
   const [speed, setSpeed] = useState(1);
   const [job, setJob] = useState<Generation | null>(null);
@@ -156,11 +157,19 @@ export function useGenerationStudio() {
 
   const selectedVoice = voices.data?.find((voice) => voice.id === voiceId);
 
+  /** Selects a voice; an untouched sample text follows the voice's model family (VieNeu sample has emotion cues). */
+  function selectVoice(nextVoiceId: string) {
+    setVoiceId(nextVoiceId);
+    const engine = voices.data?.find((voice) => voice.id === nextVoiceId)?.engine;
+    setText((current) => (isSampleText(current) ? sampleTextFor(engine) : current));
+  }
+
   return {
     text,
     setText,
     voiceId,
-    setVoiceId,
+    setVoiceId: selectVoice,
+    samplePlaceholder: sampleTextFor(selectedVoice?.engine),
     speed,
     setSpeed,
     job,

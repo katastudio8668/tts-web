@@ -1,0 +1,46 @@
+import { describe, expect, it } from 'vitest';
+import type { Voice } from '../../lib/api';
+import { estimateCredits, filterVoices, paginate, voiceLabel, voiceMeta } from './voiceCatalog';
+
+const voices: Voice[] = [
+  { id: 'ngoc_huyen', displayName: 'Ngọc Huyền', language: 'vi', gender: 'female', engine: 'korva', creditsPerCharacter: 1 },
+  { id: 'vieneu_ngoc_huyen', displayName: 'VieNeu Ngọc Huyền', language: 'vi', gender: 'female', engine: 'vieneu', creditsPerCharacter: 1 },
+  { id: 'vieneu_adam', displayName: 'Adam', language: 'vi', gender: 'male', engine: 'vieneu', creditsPerCharacter: 2 },
+  { id: 'gia_bao', displayName: 'Korva Gia Bảo', language: 'vi', gender: 'male' },
+];
+
+describe('voice catalog', () => {
+  it('shows names without the engine prefix', () => {
+    expect(voiceLabel(voices[1])).toBe('Ngọc Huyền');
+    expect(voiceLabel(voices[3])).toBe('Gia Bảo');
+    expect(voiceLabel(voices[2])).toBe('Adam');
+  });
+
+  it('searches by name ignoring case and Vietnamese accents', () => {
+    expect(filterVoices(voices, 'ngoc').map((v) => v.id)).toEqual(['ngoc_huyen', 'vieneu_ngoc_huyen']);
+    expect(filterVoices(voices, 'GIA BAO').map((v) => v.id)).toEqual(['gia_bao']);
+    expect(filterVoices(voices, 'vieneu')).toEqual([]);
+    expect(filterVoices(voices, '  ')).toHaveLength(4);
+  });
+
+  it('paginates and clamps the page into range', () => {
+    const items = Array.from({ length: 21 }, (_, i) => i);
+    expect(paginate(items, 1, 8)).toEqual({ items: [0, 1, 2, 3, 4, 5, 6, 7], page: 1, pageCount: 3 });
+    expect(paginate(items, 3, 8).items).toEqual([16, 17, 18, 19, 20]);
+    expect(paginate(items, 9, 8).page).toBe(3);
+    expect(paginate([], 2, 8)).toEqual({ items: [], page: 1, pageCount: 1 });
+  });
+
+  it('describes gender and model family, and flags VIP rates', () => {
+    expect(voiceMeta(voices[0])).toBe('Nữ · Korva');
+    expect(voiceMeta(voices[1])).toBe('Nữ · VieNeu v3');
+    expect(voiceMeta(voices[2])).toBe('Nam · VieNeu v3 · VIP ×2');
+  });
+
+  it('estimates credits like the API: rounded up, without float artefacts', () => {
+    expect(estimateCredits(10, voices[0])).toBe(10);
+    expect(estimateCredits(11, { ...voices[0], creditsPerCharacter: 1.5 })).toBe(17);
+    expect(estimateCredits(10, { ...voices[0], creditsPerCharacter: 1.1 })).toBe(11);
+    expect(estimateCredits(10, voices[3])).toBe(10);
+  });
+});
