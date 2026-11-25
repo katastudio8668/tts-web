@@ -100,6 +100,8 @@ describe('useGenerationStudio', () => {
       language: 'vi',
       speed: 1,
       totalSteps: 32,
+      sentencePause: 0.5,
+      paragraphPause: 1.5,
     });
   });
   it('switches the untouched sample text to the selected TTS group, but never replaces user text', async () => {
