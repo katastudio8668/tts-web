@@ -233,6 +233,7 @@ export function useGenerationStudio() {
     setVoiceId: selectVoice,
     samplePlaceholder: sampleTextFor(selectedVoice?.group),
     maxTextCharacters: generationSettings.data?.maxTextCharacters ?? 3500,
+    baseCreditsPerCharacter: generationSettings.data?.creditsPerCharacter ?? 5,
     speed,
     setSpeed,
     sentencePause,
