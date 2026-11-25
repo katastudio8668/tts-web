@@ -113,7 +113,12 @@ export function useGenerationStudio() {
             try {
               const next = JSON.parse(data) as Generation;
               setJob(next);
-              if (['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(next.status)) return;
+              if (['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(next.status)) {
+                setPendingRequest(null);
+                void queryClient.invalidateQueries({ queryKey: ['usage'] });
+                void queryClient.invalidateQueries({ queryKey: ['generations'] });
+                return;
+              }
             } catch {
               // Keep the polling query as a fallback for malformed events.
             }
@@ -221,6 +226,10 @@ export function useGenerationStudio() {
     samplePlaceholder: sampleTextFor(selectedVoice?.group),
     speed,
     setSpeed,
+    sentencePause,
+    setSentencePause,
+    paragraphPause,
+    setParagraphPause,
     job,
     voices,
     create,
