@@ -7,6 +7,7 @@ import {
   apiRequest,
   fetchAudio,
   type Generation,
+  type GenerationPublicSettings,
   type Voice,
 } from '../../lib/api';
 import {
@@ -34,6 +35,13 @@ export function useGenerationStudio() {
   const [audioLoading, setAudioLoading] = useState(false);
   const [pendingRequest, setPendingRequest] = useState<GenerationRequestIntent | null>(null);
   const audioAbortController = useRef<AbortController | null>(null);
+
+  const generationSettings = useQuery({
+    queryKey: ['generation-settings'],
+    queryFn: () => apiRequest<GenerationPublicSettings>('/generations/settings', token),
+    enabled: Boolean(token),
+    staleTime: 60_000,
+  });
 
   const voices = useQuery({
     queryKey: ['voices'],
@@ -224,6 +232,7 @@ export function useGenerationStudio() {
     voiceId,
     setVoiceId: selectVoice,
     samplePlaceholder: sampleTextFor(selectedVoice?.group),
+    maxTextCharacters: generationSettings.data?.maxTextCharacters ?? 3500,
     speed,
     setSpeed,
     sentencePause,
@@ -239,7 +248,7 @@ export function useGenerationStudio() {
     audioError,
     audioLoading,
     selectedVoice,
-    canSubmit: text.trim().length > 0 && Boolean(voiceId) && !create.isPending,
+    canSubmit: text.trim().length > 0 && text.length <= (generationSettings.data?.maxTextCharacters ?? 3500) && Boolean(voiceId) && !create.isPending,
     submitGeneration,
     playAudio,
     isPaymentRequired: create.error instanceof ApiError && create.error.status === 402,
