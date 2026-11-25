@@ -56,6 +56,14 @@ export type FreeTierSetting = {
   updatedBy: string | null;
 };
 
+export type GenerationSettings = {
+  maxTextCharacters: number;
+  creditsPerCharacter: number;
+  weeklyCredits: number;
+  updatedAt: string;
+  updatedBy: string | null;
+};
+
 export type Plan = {
   id: string;
   code: string;
