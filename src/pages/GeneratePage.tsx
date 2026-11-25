@@ -20,6 +20,7 @@ import { EMOTION_CUES } from '../features/generation/sampleText';
 import { estimateCredits, voiceLabel } from '../features/generation/voiceCatalog';
 import { LocalFolderGate } from '../features/storage/LocalFolderGate';
 import { VoiceTonePanel } from '../features/voice-tone/VoiceTonePanel';
+import { useVoiceTone } from '../features/voice-tone/useVoiceTone';
 import { useAutoSaveVoice } from '../features/storage/useAutoSaveVoice';
 import { useSaveTarget } from '../features/storage/useSaveTarget';
 
@@ -34,6 +35,7 @@ export default function GeneratePage() {
   });
   const free = freeTierSummary(usage.data);
   const preview = useVoicePreview();
+  const voiceTone = useVoiceTone(token);
   const saveTarget = useSaveTarget();
   const {
     text,
@@ -147,7 +149,7 @@ export default function GeneratePage() {
               className="secondary-button"
               disabled={!voiceId}
               title="Nghe giọng đang chọn đọc đoạn văn mẫu (miễn phí)"
-              onClick={() => void preview.toggle(voiceId)}
+              onClick={() => void preview.toggle(voiceId, { speed, tone: voiceTone.setting.data ?? { id: 'original', intensity: 0.7 } })}
             >
               {preview.loadingId === voiceId && voiceId
                 ? <Loader2 size={16} className="spin" />
