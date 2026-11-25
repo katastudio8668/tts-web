@@ -23,7 +23,9 @@ export function useGenerationStudio() {
 
   const [text, setText] = useState(DEFAULT_SAMPLE_TEXT);
   const [voiceId, setVoiceId] = useState('');
-  const [speed, setSpeed] = useState(1);\n  const [sentencePause, setSentencePause] = useState(0.5);\n  const [paragraphPause, setParagraphPause] = useState(1.5);
+  const [speed, setSpeed] = useState(1);
+  const [sentencePause, setSentencePause] = useState(0.5);
+  const [paragraphPause, setParagraphPause] = useState(1.5);
   const [job, setJob] = useState<Generation | null>(null);
   const [pollingStartedAt, setPollingStartedAt] = useState<number | null>(null);
   const [pollingTimedOut, setPollingTimedOut] = useState(false);
