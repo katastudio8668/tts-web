@@ -134,7 +134,7 @@ export function useGenerationStudio() {
       controller.abort();
       if (retryTimer !== undefined) window.clearTimeout(retryTimer);
     };
-  }, [job?.id, job?.status, token]);
+  }, [job?.id, job?.status, token, queryClient]);
 
   useEffect(() => {
     if (!status.data) return;
