@@ -23,6 +23,7 @@ import { VoiceTonePanel } from '../features/voice-tone/VoiceTonePanel';
 import { useVoiceTone } from '../features/voice-tone/useVoiceTone';
 import { useAutoSaveVoice } from '../features/storage/useAutoSaveVoice';
 import { useSaveTarget } from '../features/storage/useSaveTarget';
+import { VoiceCharacterStudio } from '../features/generation/VoiceCharacterStudio';
 
 export default function GeneratePage() {
   const studio = useGenerationStudio();
@@ -77,6 +78,8 @@ export default function GeneratePage() {
         <h1>Studio tạo giọng nói</h1>
         <p>Chuyển văn bản thành âm thanh với giọng đọc tiếng Việt tự nhiên.</p>
       </div>
+
+      <VoiceCharacterStudio />
 
       <div className="studio-grid">
         <section className="panel editor-panel">
