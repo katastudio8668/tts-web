@@ -3,8 +3,8 @@ export type Voice = {
   displayName: string;
   language: string;
   gender?: string | null;
-  /** Model family: 'korva' or 'vieneu'. */
-  engine?: string;
+  /** TTS group the voice belongs to (1 or 2). */
+  group?: number;
   /** Credit multiplier per character: 1 for standard voices, higher for VIP voices. */
   creditsPerCharacter?: number;
 };
@@ -98,12 +98,12 @@ if (!configuredApiBaseUrl && !import.meta.env.DEV) {
   throw new Error('VITE_API_BASE_URL must be configured outside development.');
 }
 
-const API_BASE_URL = (
+export const API_BASE_URL = (
   configuredApiBaseUrl || 'http://localhost:3058/api/v1'
 ).replace(/\/+$/, '');
 
 export class ApiError extends Error {
-  constructor(message: string, readonly status: number) {
+  constructor(message: string, readonly status: number, readonly details?: { problems?: string[]; missingAssets?: string[] }) {
     super(message);
     this.name = 'ApiError';
   }
@@ -114,6 +114,7 @@ const REQUEST_TIMEOUT_MS = 30_000;
 function normalizeApiError(
   status: number,
   message?: string | string[],
+  details?: { problems?: string[]; missingAssets?: string[] },
 ): ApiError {
   const fallback = status === 401
     ? 'Phiên đăng nhập đã hết hạn.'
@@ -129,7 +130,7 @@ function normalizeApiError(
       ? message.join(', ')
       : message || fallback;
 
-  return new ApiError(normalizedMessage, status);
+  return new ApiError(normalizedMessage, status, details);
 }
 
 function normalizeTransportError(
@@ -164,6 +165,7 @@ async function requestResponse(
   path: string,
   accessToken: string,
   init: RequestInit = {},
+  timeoutMs = REQUEST_TIMEOUT_MS,
 ): Promise<{ response: Response; signal: AbortSignal }> {
   const headers = new Headers(init.headers);
   headers.set('Authorization', `Bearer ${accessToken}`);
@@ -172,7 +174,7 @@ async function requestResponse(
     headers.set('Content-Type', 'application/json');
   }
 
-  const timeoutSignal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  const timeoutSignal = AbortSignal.timeout(timeoutMs);
   const signal = init.signal
     ? AbortSignal.any([init.signal, timeoutSignal])
     : timeoutSignal;
@@ -185,9 +187,9 @@ async function requestResponse(
 
     if (!response.ok) {
       const body = await response.json().catch(() => null) as
-        | { message?: string | string[] }
+        | { message?: string | string[]; problems?: string[]; missingAssets?: string[] }
         | null;
-      throw normalizeApiError(response.status, body?.message);
+      throw normalizeApiError(response.status, body?.message, body ? { problems: body.problems, missingAssets: body.missingAssets } : undefined);
     }
 
     return { response, signal };
@@ -201,8 +203,9 @@ export async function apiRequest<T>(
   path: string,
   accessToken: string,
   init: RequestInit = {},
+  timeoutMs?: number,
 ): Promise<T> {
-  const { response } = await requestResponse(path, accessToken, init);
+  const { response } = await requestResponse(path, accessToken, init, timeoutMs);
 
   if (response.status === 204) return undefined as T;
 
@@ -228,4 +231,14 @@ export async function fetchAudio(
   }
 
   return URL.createObjectURL(audioBlob);
+}
+
+/** Downloads a binary response (rendered video) with a caller-chosen timeout. */
+export async function fetchBlob(path: string, token: string, init: RequestInit = {}, timeoutMs = 10 * 60_000): Promise<Blob> {
+  const { response, signal } = await requestResponse(path, token, { ...init, method: 'GET' }, timeoutMs);
+  try {
+    return await response.blob();
+  } catch (error) {
+    normalizeTransportError(error, signal, init.signal);
+  }
 }

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "kata-tts",
+  "version": "1.0.0",
+  "description": "Vietnamese voice-overs and voice-synced videos in KATA TTS: write scripts, design video templates live in production, generate scene voices and export MP4.",
+  "author": { "name": "KATA" },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "KATA TTS",
+        "shortDescription": "Vietnamese voice-overs and voice-synced videos",
+        "longDescription": "Write Vietnamese voice scripts, design reusable video templates directly in your KATA TTS account, generate a voice for every scene with the timing fitted automatically, and export the video to Google Drive.",
+        "developerName": "KATA",
+        "category": "Productivity",
+        "capabilities": ["Video templates", "Voice-over", "Voice-to-video sync", "Video export"],
+        "defaultPrompt": [
+          "Design a 9:16 KATA TTS video template for a coffee shop promo with karaoke captions.",
+          "Write a 45-second script about saving money and build a KATA TTS video project from it.",
+          "Generate the missing scene voices of my latest KATA TTS video and fit the timing."
+        ],
+        "brandColor": "#8E7DF8",
+        "brandColorDark": "#B4AAFF"
+      }
+    }
+  }
+}

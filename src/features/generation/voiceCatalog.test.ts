@@ -3,23 +3,22 @@ import type { Voice } from '../../lib/api';
 import { estimateCredits, filterVoices, paginate, voiceLabel, voiceMeta } from './voiceCatalog';
 
 const voices: Voice[] = [
-  { id: 'ngoc_huyen', displayName: 'Ngọc Huyền', language: 'vi', gender: 'female', engine: 'korva', creditsPerCharacter: 1 },
-  { id: 'vieneu_ngoc_huyen', displayName: 'VieNeu Ngọc Huyền', language: 'vi', gender: 'female', engine: 'vieneu', creditsPerCharacter: 1 },
-  { id: 'vieneu_adam', displayName: 'Adam', language: 'vi', gender: 'male', engine: 'vieneu', creditsPerCharacter: 2 },
-  { id: 'gia_bao', displayName: 'Korva Gia Bảo', language: 'vi', gender: 'male' },
+  { id: 'ngoc_huyen', displayName: 'Ngọc Huyền', language: 'vi', gender: 'female', group: 1, creditsPerCharacter: 1 },
+  { id: 'g2_ngoc_huyen', displayName: 'Ngọc Huyền', language: 'vi', gender: 'female', group: 2, creditsPerCharacter: 1 },
+  { id: 'g2_adam', displayName: 'Adam', language: 'vi', gender: 'male', group: 2, creditsPerCharacter: 2 },
+  { id: 'gia_bao', displayName: 'Gia Bảo', language: 'vi', gender: 'male' },
 ];
 
 describe('voice catalog', () => {
-  it('shows names without the engine prefix', () => {
+  it('shows plain voice names', () => {
     expect(voiceLabel(voices[1])).toBe('Ngọc Huyền');
-    expect(voiceLabel(voices[3])).toBe('Gia Bảo');
     expect(voiceLabel(voices[2])).toBe('Adam');
   });
 
   it('searches by name ignoring case and Vietnamese accents', () => {
-    expect(filterVoices(voices, 'ngoc').map((v) => v.id)).toEqual(['ngoc_huyen', 'vieneu_ngoc_huyen']);
+    expect(filterVoices(voices, 'ngoc').map((v) => v.id)).toEqual(['ngoc_huyen', 'g2_ngoc_huyen']);
     expect(filterVoices(voices, 'GIA BAO').map((v) => v.id)).toEqual(['gia_bao']);
-    expect(filterVoices(voices, 'vieneu')).toEqual([]);
+    expect(filterVoices(voices, 'xyz')).toEqual([]);
     expect(filterVoices(voices, '  ')).toHaveLength(4);
   });
 
@@ -31,10 +30,10 @@ describe('voice catalog', () => {
     expect(paginate([], 2, 8)).toEqual({ items: [], page: 1, pageCount: 1 });
   });
 
-  it('describes gender and model family, and flags VIP rates', () => {
-    expect(voiceMeta(voices[0])).toBe('Nữ · Korva');
-    expect(voiceMeta(voices[1])).toBe('Nữ · VieNeu v3');
-    expect(voiceMeta(voices[2])).toBe('Nam · VieNeu v3 · VIP ×2');
+  it('describes gender and TTS group, and flags VIP rates', () => {
+    expect(voiceMeta(voices[0])).toBe('Nữ · TTS Group 1');
+    expect(voiceMeta(voices[1])).toBe('Nữ · TTS Group 2');
+    expect(voiceMeta(voices[2])).toBe('Nam · TTS Group 2 · VIP ×2');
   });
 
   it('estimates credits like the API: rounded up, without float artefacts', () => {

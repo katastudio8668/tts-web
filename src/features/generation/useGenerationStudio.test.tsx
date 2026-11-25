@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { KORVA_SAMPLE_TEXT, VIENEU_SAMPLE_TEXT } from './sampleText';
+import { GROUP1_SAMPLE_TEXT, GROUP2_SAMPLE_TEXT } from './sampleText';
 import { useGenerationStudio } from './useGenerationStudio';
 
 const { apiRequestMock, fetchAudioMock } = vi.hoisted(() => ({
@@ -68,7 +68,7 @@ describe('useGenerationStudio', () => {
     });
 
     await waitFor(() => expect(result.current.voices.data).toHaveLength(1));
-    expect(result.current.text).toBe(KORVA_SAMPLE_TEXT);
+    expect(result.current.text).toBe(GROUP2_SAMPLE_TEXT);
     act(() => {
       result.current.setText('Xin chào');
       result.current.setVoiceId('voice-1');
@@ -102,22 +102,22 @@ describe('useGenerationStudio', () => {
       totalSteps: 32,
     });
   });
-  it('switches the untouched sample text to the selected model family, but never replaces user text', async () => {
+  it('switches the untouched sample text to the selected TTS group, but never replaces user text', async () => {
     apiRequestMock.mockImplementation((path: string) => Promise.resolve(path === '/voices' ? [
-      { id: 'bao_kim', displayName: 'Bảo Kim', language: 'vi', engine: 'korva' },
-      { id: 'vieneu_adam', displayName: 'Adam', language: 'vi', engine: 'vieneu' },
+      { id: 'bao_kim', displayName: 'Bảo Kim', language: 'vi', group: 1 },
+      { id: 'g2_adam', displayName: 'Adam', language: 'vi', group: 2 },
     ] : null));
     const { result } = renderHook(() => useGenerationStudio(), { wrapper: createWrapper() });
     await waitFor(() => expect(result.current.voices.data).toHaveLength(2));
 
-    act(() => result.current.setVoiceId('vieneu_adam'));
-    expect(result.current.text).toBe(VIENEU_SAMPLE_TEXT);
-    expect(result.current.samplePlaceholder).toBe(VIENEU_SAMPLE_TEXT);
     act(() => result.current.setVoiceId('bao_kim'));
-    expect(result.current.text).toBe(KORVA_SAMPLE_TEXT);
+    expect(result.current.text).toBe(GROUP1_SAMPLE_TEXT);
+    expect(result.current.samplePlaceholder).toBe(GROUP1_SAMPLE_TEXT);
+    act(() => result.current.setVoiceId('g2_adam'));
+    expect(result.current.text).toBe(GROUP2_SAMPLE_TEXT);
 
     act(() => result.current.setText('Văn bản của tôi'));
-    act(() => result.current.setVoiceId('vieneu_adam'));
+    act(() => result.current.setVoiceId('bao_kim'));
     expect(result.current.text).toBe('Văn bản của tôi');
   });
 

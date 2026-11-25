@@ -18,6 +18,9 @@ import { useVoicePreview } from '../features/generation/useVoicePreview';
 import { VoicePicker } from '../features/generation/VoicePicker';
 import { EMOTION_CUES } from '../features/generation/sampleText';
 import { estimateCredits, voiceLabel } from '../features/generation/voiceCatalog';
+import { LocalFolderGate } from '../features/storage/LocalFolderGate';
+import { useAutoSaveVoice } from '../features/storage/useAutoSaveVoice';
+import { useSaveTarget } from '../features/storage/useSaveTarget';
 
 export default function GeneratePage() {
   const studio = useGenerationStudio();
@@ -30,6 +33,7 @@ export default function GeneratePage() {
   });
   const free = freeTierSummary(usage.data);
   const preview = useVoicePreview();
+  const saveTarget = useSaveTarget();
   const {
     text,
     setText,
@@ -52,6 +56,10 @@ export default function GeneratePage() {
     playAudio,
     isPaymentRequired,
   } = studio;
+  const autoSaveMessage = useAutoSaveVoice({
+    jobId: job?.id ?? null, succeeded: job?.status === 'SUCCEEDED', enabled: !saveTarget.usesDrive && saveTarget.status.isSuccess,
+    token, userId: saveTarget.userId,
+  });
 
   return (
     <div className="page-stack">
@@ -85,7 +93,7 @@ export default function GeneratePage() {
                 <> · ước tính {formatCharacters(estimateCredits(text.trim().length, selectedVoice))} credit</>
               )}
             </span>
-            <span>Giọng VieNeu v3 hỗ trợ thẻ cảm xúc {EMOTION_CUES.join(' ')}.</span>
+            <span>Giọng TTS Group 2 hỗ trợ thẻ cảm xúc {EMOTION_CUES.join(' ')}.</span>
           </div>
           {free && (
             <p className="free-tier-note" role="status">
@@ -145,7 +153,7 @@ export default function GeneratePage() {
             </button>
             <button
               className="primary-button generate-button"
-              disabled={!canSubmit}
+              disabled={!canSubmit || saveTarget.needsFolder}
               onClick={submitGeneration}
             >
               <WandSparkles size={17} />
@@ -153,6 +161,7 @@ export default function GeneratePage() {
               <Sparkles size={16} />
             </button>
           </div>
+          {saveTarget.needsFolder && <LocalFolderGate what="voice" onPick={saveTarget.pickFolder} />}
           {!voiceId && voices.data && voices.data.length > 0 && (
             <p className="inline-loading">Chọn một giọng để nghe thử hoặc tạo audio.</p>
           )}
@@ -245,6 +254,8 @@ export default function GeneratePage() {
                 </button>
               )}
 
+              {autoSaveMessage && <p className="form-success" role="status">{autoSaveMessage}</p>}
+
               {audioError && (
                 <p className="inline-error" role="alert">{audioError}</p>
               )}
@@ -255,7 +266,7 @@ export default function GeneratePage() {
                   <a
                     className="download-link"
                     href={audioUrl}
-                    download={`korva-${job.id}.wav`}
+                    download={`kata-tts-${job.id}.wav`}
                   >
                     <Download size={16} />
                     Tải WAV

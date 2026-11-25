@@ -111,7 +111,7 @@ export default function DashboardPage() {
         <div className="create-copy">
           <span className="eyebrow">TEXT TO SPEECH</span>
           <h2>Studio tạo giọng nói</h2>
-          <p>Chọn giọng, nhập nội dung và để Korva làm phần còn lại.</p>
+          <p>Chọn giọng, nhập nội dung và để KATA TTS lo phần còn lại.</p>
         </div>
         <span className="banner-action">
           Bắt đầu

@@ -2,13 +2,10 @@ import type { Voice } from '../../lib/api';
 
 export const VOICE_PAGE_SIZE = 8;
 
-const ENGINE_PREFIX = /^(vieneu|korva)\s+/i;
-const ENGINE_LABELS: Record<string, string> = { korva: 'Korva', vieneu: 'VieNeu v3' };
 const GENDER_LABELS: Record<string, string> = { female: 'Nữ', male: 'Nam' };
 
-/** Voice name without the engine prefix (older API data may still carry "VieNeu …"). */
 export function voiceLabel(voice: Pick<Voice, 'displayName'>): string {
-  return voice.displayName.replace(ENGINE_PREFIX, '');
+  return voice.displayName;
 }
 
 function normalize(value: string): string {
@@ -35,7 +32,7 @@ export function voiceRate(voice: Pick<Voice, 'creditsPerCharacter'>): number {
 
 export function voiceMeta(voice: Voice): string {
   const parts = [GENDER_LABELS[voice.gender ?? ''] ?? 'Tiếng Việt'];
-  if (voice.engine) parts.push(ENGINE_LABELS[voice.engine] ?? voice.engine);
+  if (voice.group) parts.push(`TTS Group ${voice.group}`);
   const rate = voiceRate(voice);
   if (rate > 1) parts.push(`VIP ×${rate.toLocaleString('vi-VN')}`);
   return parts.join(' · ');

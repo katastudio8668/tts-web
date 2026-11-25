@@ -23,6 +23,7 @@ function mockApi(role: string, weeklyCredits = 1000) {
       return { weeklyCredits: JSON.parse(String(init.body)).weeklyCredits, updatedAt: '2026-11-24T10:00:00.000Z', updatedBy: 'u1' };
     }
     if (path === '/admin/free-tier') return { weeklyCredits, updatedAt: '2026-11-24T09:00:00.000Z', updatedBy: null };
+    if (path === '/admin/tts-groups') return { enabledGroups: [2], updatedAt: '2026-11-24T09:00:00.000Z', updatedBy: null };
     throw new Error(`unexpected ${path}`);
   });
 }

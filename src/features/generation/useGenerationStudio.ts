@@ -12,7 +12,7 @@ import {
   getGenerationPollingInterval,
   GENERATION_POLL_MAX_DURATION_MS,
 } from './generationPolling';
-import { isSampleText, KORVA_SAMPLE_TEXT, sampleTextFor } from './sampleText';
+import { DEFAULT_SAMPLE_TEXT, isSampleText, sampleTextFor } from './sampleText';
 import { getGenerationRequestIntent, type GenerationPayload, type GenerationRequestIntent } from './generationRequest';
 
 export function useGenerationStudio() {
@@ -20,7 +20,7 @@ export function useGenerationStudio() {
   const queryClient = useQueryClient();
   const token = session?.access_token ?? '';
 
-  const [text, setText] = useState(KORVA_SAMPLE_TEXT);
+  const [text, setText] = useState(DEFAULT_SAMPLE_TEXT);
   const [voiceId, setVoiceId] = useState('');
   const [speed, setSpeed] = useState(1);
   const [job, setJob] = useState<Generation | null>(null);
@@ -157,11 +157,11 @@ export function useGenerationStudio() {
 
   const selectedVoice = voices.data?.find((voice) => voice.id === voiceId);
 
-  /** Selects a voice; an untouched sample text follows the voice's model family (VieNeu sample has emotion cues). */
+  /** Selects a voice; an untouched sample text follows the voice's TTS group (the group 2 sample has emotion cues). */
   function selectVoice(nextVoiceId: string) {
     setVoiceId(nextVoiceId);
-    const engine = voices.data?.find((voice) => voice.id === nextVoiceId)?.engine;
-    setText((current) => (isSampleText(current) ? sampleTextFor(engine) : current));
+    const group = voices.data?.find((voice) => voice.id === nextVoiceId)?.group;
+    setText((current) => (isSampleText(current) ? sampleTextFor(group) : current));
   }
 
   return {
@@ -169,7 +169,7 @@ export function useGenerationStudio() {
     setText,
     voiceId,
     setVoiceId: selectVoice,
-    samplePlaceholder: sampleTextFor(selectedVoice?.engine),
+    samplePlaceholder: sampleTextFor(selectedVoice?.group),
     speed,
     setSpeed,
     job,

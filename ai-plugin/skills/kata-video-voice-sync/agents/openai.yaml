@@ -1,0 +1,11 @@
+interface:
+  display_name: "KATA Voice ↔ Video Sync"
+  short_description: "Scene voices that fit the video timing"
+
+dependencies:
+  tools:
+    - type: mcp
+      value: kata-tts
+      description: KATA TTS voices, video templates, projects and export
+      transport: streamable_http
+      url: __KATA_MCP_URL__

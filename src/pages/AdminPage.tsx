@@ -3,6 +3,7 @@ import { Gift, ShieldAlert } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
 import { useIsAdmin } from '../features/admin/useIsAdmin';
 import { apiRequest, type FreeTierSetting } from '../lib/api';
+import { TtsGroupsCard } from '../features/admin/TtsGroupsCard';
 
 const MAX_WEEKLY_CREDITS = 100_000_000;
 
@@ -65,6 +66,8 @@ export default function AdminPage() {
         <h1>Quản trị</h1>
         <p>Cấu hình áp dụng cho toàn bộ người dùng KATA TTS.</p>
       </div>
+
+      <TtsGroupsCard token={token} />
 
       <section className="panel">
         <div className="panel-heading">

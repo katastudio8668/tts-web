@@ -1,0 +1,11 @@
+interface:
+  display_name: "KATA Video Template Design"
+  short_description: "Design video templates live in KATA TTS"
+
+dependencies:
+  tools:
+    - type: mcp
+      value: kata-tts
+      description: KATA TTS voices, video templates, projects and export
+      transport: streamable_http
+      url: __KATA_MCP_URL__
