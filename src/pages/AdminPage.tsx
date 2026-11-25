@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useIsAdmin } from '../features/admin/useIsAdmin';
 import { apiRequest, type FreeTierSetting } from '../lib/api';
 import { TtsGroupsCard } from '../features/admin/TtsGroupsCard';
+import { VideoLimitsCard } from '../features/admin/VideoLimitsCard';
 
 const MAX_WEEKLY_CREDITS = 100_000_000;
 
@@ -68,6 +69,7 @@ export default function AdminPage() {
       </div>
 
       <TtsGroupsCard token={token} />
+      <VideoLimitsCard token={token} />
 
       <section className="panel">
         <div className="panel-heading">

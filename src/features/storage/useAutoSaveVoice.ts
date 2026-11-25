@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { fetchBlob } from '../../lib/api';
+import { chargeToneDownload, fetchBlob } from '../../lib/api';
 import { saveToFolder } from '../video/localFolder';
 
 /** Saves each finished voice into the user's folder once, when they do not use Google Drive. */
@@ -10,6 +10,7 @@ export function useAutoSaveVoice(params: { jobId: string | null; succeeded: bool
     const { jobId, succeeded, enabled, token, userId } = params;
     if (!jobId || !succeeded || !enabled || !token || saved.current.has(jobId)) {return;}
     saved.current.add(jobId);
+    chargeToneDownload(token, jobId);
     const controller = new AbortController();
     void fetchBlob(`/generations/${jobId}/audio`, token, { signal: controller.signal }, 120_000)
       .then((blob) => saveToFolder(userId, blob, `kata-tts-${jobId}.wav`))

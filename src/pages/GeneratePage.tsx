@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../features/auth/AuthProvider';
 import { formatCharacters, freeTierSummary } from '../features/billing/freeTier';
-import { apiRequest, type Usage } from '../lib/api';
+import { apiRequest, chargeToneDownload, type Usage } from '../lib/api';
 import { generationStatusLabel } from '../features/generation/generationPresentation';
 import { useGenerationStudio } from '../features/generation/useGenerationStudio';
 import { useVoicePreview } from '../features/generation/useVoicePreview';
@@ -19,6 +19,7 @@ import { VoicePicker } from '../features/generation/VoicePicker';
 import { EMOTION_CUES } from '../features/generation/sampleText';
 import { estimateCredits, voiceLabel } from '../features/generation/voiceCatalog';
 import { LocalFolderGate } from '../features/storage/LocalFolderGate';
+import { VoiceTonePanel } from '../features/voice-tone/VoiceTonePanel';
 import { useAutoSaveVoice } from '../features/storage/useAutoSaveVoice';
 import { useSaveTarget } from '../features/storage/useSaveTarget';
 
@@ -130,13 +131,15 @@ export default function GeneratePage() {
             <input
               id="speed"
               type="range"
-              min=".8"
-              max="1.2"
+              min=".5"
+              max="3"
               step=".05"
               value={speed}
               onChange={(event) => setSpeed(Number(event.target.value))}
             />
           </div>
+
+          <VoiceTonePanel token={token} />
 
           <div className="generate-actions">
             <button
@@ -267,6 +270,7 @@ export default function GeneratePage() {
                     className="download-link"
                     href={audioUrl}
                     download={`kata-tts-${job.id}.wav`}
+                    onClick={() => chargeToneDownload(token, job.id)}
                   >
                     <Download size={16} />
                     Tải WAV

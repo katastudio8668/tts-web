@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Download, Play } from 'lucide-react';
-import { fetchAudio, type Generation } from '../../lib/api';
+import { chargeToneDownload, fetchAudio, type Generation } from '../../lib/api';
 import { generationStatusLabel } from './generationPresentation';
 
 export default function GenerationHistoryItem({ item, token }: { item: Generation; token: string }) {
@@ -69,7 +69,17 @@ export default function GenerationHistoryItem({ item, token }: { item: Generatio
             <Play size={16} />
           </button>
         )}
-        {audioUrl && <a className="icon-button" aria-label="Tải WAV" href={audioUrl} download={`kata-tts-${item.id}.wav`}><Download size={16}/></a>}
+        {audioUrl && (
+          <a
+            className="icon-button"
+            aria-label="Tải WAV"
+            href={audioUrl}
+            download={`kata-tts-${item.id}.wav`}
+            onClick={() => chargeToneDownload(token, item.id)}
+          >
+            <Download size={16}/>
+          </a>
+        )}
       </div>
     </div>
   );

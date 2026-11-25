@@ -212,6 +212,16 @@ export async function apiRequest<T>(
   return response.json() as Promise<T>;
 }
 
+/**
+ * Charges the extra voice-tone fee (once per job, server-side idempotent) right when audio leaves
+ * our control for good: an explicit download click, or an automatic save to the user's own folder.
+ * Fire-and-forget by design -- it never blocks or delays the download itself, and errors (including
+ * insufficient balance) are silently ignored: the user already paid full price for the generation.
+ */
+export function chargeToneDownload(token: string, generationId: string): void {
+  void apiRequest(`/generations/${generationId}/charge-tone-download`, token, { method: 'POST' }).catch(() => undefined);
+}
+
 export async function fetchAudio(
   path: string,
   token: string,

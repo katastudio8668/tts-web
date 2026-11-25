@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { formatCharacters } from '../../billing/freeTier';
 import type { ProjectStatus, VideoSpec, VoiceEstimate, VoiceProgress } from '../types';
 import { videoApi } from '../videoApi';
+import { VoiceTonePanel } from '../../voice-tone/VoiceTonePanel';
 
 type Props = {
   spec: VideoSpec; status: ProjectStatus | null; token: string; projectId: string;
@@ -35,6 +36,7 @@ export function VoicePanel({ spec, status, token, projectId, voice, runVoices, s
         <strong>Voice & khớp thời lượng</strong>
         <span>{status ? `${status.voicedScenes - missing}/${status.voicedScenes} cảnh đã có voice` : ''}</span>
       </div>
+      <VoiceTonePanel token={token} />
       {voice.running ? (
         <div className="voice-progress" role="status">
           <span className="spinner" />
