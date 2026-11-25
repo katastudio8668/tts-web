@@ -39,7 +39,7 @@ export function voiceMeta(voice: Voice): string {
 }
 
 /** Display-only estimate; the API is authoritative and uses the same rounding (thousandths, rounded up). */
-export function estimateCredits(characters: number, voice: Pick<Voice, 'creditsPerCharacter'>): number {
-  const milliRate = Math.round(voiceRate(voice) * 1000);
+export function estimateCredits(characters: number, voice: Pick<Voice, 'creditsPerCharacter'>, baseRate = 5): number {
+  const milliRate = Math.round(voiceRate(voice) * baseRate * 1000);
   return Math.floor((characters * milliRate + 999) / 1000);
 }
