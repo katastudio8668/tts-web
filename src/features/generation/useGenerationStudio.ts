@@ -88,6 +88,50 @@ export function useGenerationStudio() {
   }, [pollingStartedAt]);
 
   useEffect(() => {
+    if (!job?.id || !token || !['QUEUED', 'RUNNING'].includes(job.status)) return;
+    const controller = new AbortController();
+    let retryTimer: number | undefined;
+    const connect = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/generations/${job.id}/events`, {
+          headers: { Authorization: `Bearer ${token}`, Accept: 'text/event-stream' },
+          signal: controller.signal,
+        });
+        if (!response.ok || !response.body) throw new Error('Progress stream unavailable');
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        while (!controller.signal.aborted) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const frames = buffer.split('\n\n');
+          buffer = frames.pop() ?? '';
+          for (const frame of frames) {
+            const data = frame.split('\n').find((line) => line.startsWith('data: '))?.slice(6);
+            if (!data || data === '{}') continue;
+            try {
+              const next = JSON.parse(data) as Generation;
+              setJob(next);
+              if (['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(next.status)) return;
+            } catch {
+              // Keep the polling query as a fallback for malformed events.
+            }
+          }
+        }
+      } catch {
+        // Reconnect below; polling remains the fallback.
+      }
+      if (!controller.signal.aborted) retryTimer = window.setTimeout(() => void connect(), 2000);
+    };
+    void connect();
+    return () => {
+      controller.abort();
+      if (retryTimer !== undefined) window.clearTimeout(retryTimer);
+    };
+  }, [job?.id, job?.status, token]);
+
+  useEffect(() => {
     if (!status.data) return;
 
     setJob(status.data);
@@ -115,6 +159,8 @@ export function useGenerationStudio() {
       language: 'vi',
       speed,
       totalSteps: 32,
+      sentencePause,
+      paragraphPause,
     };
     const intent = getGenerationRequestIntent(payload, pendingRequest);
 
