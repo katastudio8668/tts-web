@@ -9,6 +9,8 @@ export type Voice = {
   creditsPerCharacter?: number;
 };
 
+export type GenerationPublicSettings = { maxTextCharacters: number; creditsPerCharacter: number };
+
 export type Generation = {
   id: string;
   status: 'QUEUED' | 'RUNNING' | 'SUCCEEDED' | 'FAILED' | 'CANCELLED';
