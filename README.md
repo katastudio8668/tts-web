@@ -1,4 +1,4 @@
-# KATA TTS Web - update
+# KATA TTS Web
 
 Responsive React + TypeScript customer app for the KATA TTS service.
 
