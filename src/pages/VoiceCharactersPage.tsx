@@ -10,7 +10,6 @@ export default function VoiceCharactersPage() {
         <h1>Giọng nhân vật</h1>
         <p>Tạo cấu hình giọng riêng từ bản ghi âm mẫu và lựa chọn model clone.</p>
       </div>
-
       <div className="character-page-intro">
         <div className="character-page-intro-icon"><Mic2 size={20} /></div>
         <div>
@@ -19,7 +18,6 @@ export default function VoiceCharactersPage() {
         </div>
         <Link to="/generate" className="text-link"><ArrowLeft size={15} /> Quay lại tạo giọng</Link>
       </div>
-
       <VoiceCharacterStudio />
     </div>
   );

@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import GeneratePage from './pages/GeneratePage';
 import VoiceCharactersPage from './pages/VoiceCharactersPage';
 import VoiceCharactersPage from './pages/VoiceCharactersPage';
+import VoiceCharactersPage from './pages/VoiceCharactersPage';
 import HistoryPage from './pages/HistoryPage';
 import PlansPage from './pages/PlansPage';
 import AccountPage from './pages/AccountPage';
@@ -56,6 +57,7 @@ export default function App() {
                 <Route element={<ProtectedLayout />}>
                   <Route path="/" element={<DashboardPage />} />
                   <Route path="/generate" element={<GeneratePage />} />
+                  <Route path="/characters" element={<VoiceCharactersPage />} />
                   <Route path="/characters" element={<VoiceCharactersPage />} />
                   <Route path="/characters" element={<VoiceCharactersPage />} />
                   <Route path="/history" element={<HistoryPage />} />
