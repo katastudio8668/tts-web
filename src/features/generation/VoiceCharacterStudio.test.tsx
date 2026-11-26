@@ -7,7 +7,7 @@ describe('VoiceCharacterStudio', () => {
     render(<VoiceCharacterStudio />);
     expect(screen.getByRole('heading', { name: 'Tạo giọng nhân vật' })).toBeInTheDocument();
     expect(screen.getByLabelText('Tên nhân vật')).toBeInTheDocument();
-    expect(screen.getByText('Mẫu giọng', { selector: 'label' })).toBeInTheDocument();
+    expect(screen.getByLabelText('character-audio')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Tính năng clone sắp ra mắt/ })).toBeDisabled();
   });
 });
