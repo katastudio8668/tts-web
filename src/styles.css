@@ -143,3 +143,11 @@
 .character-page-intro span{font-size:10px;color:var(--muted)}
 .character-page-intro .text-link{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 @media(max-width:640px){.character-page-intro{align-items:flex-start;flex-wrap:wrap}.character-page-intro>div:nth-child(2){flex-basis:calc(100% - 52px)}.character-page-intro .text-link{margin-left:50px}}
+
+
+/* KATA TTS brand identity */
+.brand{gap:10px;padding-inline:6px}
+.brand-logo{display:block;width:38px;height:38px;flex:none;object-fit:contain;filter:drop-shadow(0 5px 14px #7667e455)}
+.brand-wordmark{display:grid;gap:1px;font:800 19px/1 Manrope,sans-serif;letter-spacing:-.7px;color:#f1efff}
+.brand-wordmark small{font:700 7px/1.2 'DM Sans',sans-serif;letter-spacing:1.65px;color:#7fdde6;margin-top:4px}
+@media(max-width:720px){.brand-logo{width:34px;height:34px}.brand-wordmark{font-size:18px}}
